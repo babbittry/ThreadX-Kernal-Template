@@ -258,10 +258,10 @@ static void AppTaskBlink(ULONG thread_input)
     {
         LED2_ON;
         LED3_ON;
-        tx_thread_sleep(10);
+        tx_thread_sleep(5);
         LED2_OFF;
         LED3_OFF;
-        tx_thread_sleep(990);
+        tx_thread_sleep(995);
     }   
 }
 
@@ -314,7 +314,7 @@ static void AppTaskCOM(ULONG thread_input)
 {	
     double f_c = 1.1;
     double f_d = 2.2345;
-    
+    ULONG currentTime;
     (void)thread_input;
     
     while(1)
@@ -322,7 +322,9 @@ static void AppTaskCOM(ULONG thread_input)
         f_c += 0.00000000001;
         f_d -= 0.00000000002;;
         App_Printf("AppTaskCom: f_a = %.11f, f_b = %.11f\r\n", f_c, f_d);
-        tx_thread_sleep(500);
+        currentTime = tx_time_get();
+        App_Printf("current time: %d\r\n", currentTime);
+        tx_thread_sleep(1000);
     } 			  	 	       											   
 }
 
