@@ -68,9 +68,9 @@
 *********************************************************************************************************
 */
 #define  APP_CFG_TASK_START_STK_SIZE                    4096u
-#define  APP_CFG_TASK_BLINK_STK_SIZE                    4096u
-#define  APP_CFG_TASK_COM_STK_SIZE                      4096u
-#define  APP_CFG_TASK_USER_IF_STK_SIZE                  4096u
+#define  APP_CFG_TASK_BLINK_STK_SIZE                    512u
+#define  APP_CFG_TASK_COM_STK_SIZE                      1024u
+#define  APP_CFG_TASK_USER_IF_STK_SIZE                  1024u
 #define  APP_CFG_TASK_IDLE_STK_SIZE                  	1024u
 #define  APP_CFG_TASK_STAT_STK_SIZE                  	1024u
 
@@ -324,7 +324,7 @@ static void AppTaskCOM(ULONG thread_input)
         App_Printf("AppTaskCom: f_a = %.11f, f_b = %.11f\r\n", f_c, f_d);
         currentTime = tx_time_get();
         App_Printf("current time: %d\r\n", currentTime);
-        tx_thread_sleep(1000);
+        tx_thread_sleep(2000);
     } 			  	 	       											   
 }
 
