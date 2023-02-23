@@ -36,9 +36,9 @@ void BSP_MPU_ConfigRegion(uint8_t Region,
                           uint8_t TypeExtField,
                           uint32_t Address,
                           uint32_t Size,
-                          bool IsShareable,
-                          bool IsCacheable,
-                          bool IsBufferable)
+                          bool_t IsShareable,
+                          bool_t IsCacheable,
+                          bool_t IsBufferable)
 {
     MPU_Region_InitTypeDef MPU_InitStruct;
 

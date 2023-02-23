@@ -77,6 +77,8 @@
 #include "bsp_key.h"
 #include "bsp_dwt.h"
 
+#include "bsp_mpu.h"
+
 //#include "bsp_cpu_rtc.h"
 //#include "bsp_cpu_adc.h"
 //#include "bsp_cpu_dac.h"

@@ -4,6 +4,9 @@
 #include "stm32h7xx_hal.h"
 #include "stdint.h"
 #include "stdbool.h"
+
+typedef bool bool_t;
+
 //定义MPU->RASR寄存器AP[26:24]位的设置值
 
 #define	MPU_1KB		MPU_REGION_SIZE_1KB
