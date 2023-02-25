@@ -70,27 +70,27 @@ void Board_MPU_Config(uint8_t Region, MPU_Mode_t Mode, uint32_t Address, uint32_
     {
     case MPU_Normal_WB:
         /* 设置内存为Normal类型,禁用共享, 回写模式不带写入读取分配*/
-        BSP_MPU_ConfigRegion(Region, MPU_INSTRUCTION_ACCESS_Enable, MPU_FULL_ACCESS, 0, Address, Size, false, true, true);
+        BSP_MPU_ConfigRegion(Region, MPU_INSTRUCTION_ACCESS_Enable, MPU_FULL_ACCESS, MPU_TEX_LEVEL0, Address, Size, false, true, true);
         break;
 
     case MPU_Normal_WBWARA:
-        /* 设置内存为Normal类型,禁用共享, 回写模式带写入读取分配*/
-        BSP_MPU_ConfigRegion(Region, MPU_INSTRUCTION_ACCESS_Enable, MPU_FULL_ACCESS, 1, Address, Size, false, true, true);
+        /* 设置内存为Normal类型,禁用共享, 读写Cache都开启，回写模式带写入读取分配*/
+        BSP_MPU_ConfigRegion(Region, MPU_INSTRUCTION_ACCESS_Enable, MPU_FULL_ACCESS, MPU_TEX_LEVEL1, Address, Size, false, true, true);
         break;
 
     case MPU_Normal_WT:
-        /* 设置内存为Normal类型,禁用共享, 直写模式*/
-        BSP_MPU_ConfigRegion(Region, MPU_INSTRUCTION_ACCESS_Enable, MPU_FULL_ACCESS, 0, Address, Size, false, true, false);
+        /* 设置内存为Normal类型, 禁用共享, 关闭写Cache， 开启读Cache，直写模式*/
+        BSP_MPU_ConfigRegion(Region, MPU_INSTRUCTION_ACCESS_Enable, MPU_FULL_ACCESS, MPU_TEX_LEVEL0, Address, Size, false, true, false);
         break;
 
     case MPU_Normal_NonCache:
         /* 设置内存为Normal类型,禁用共享，禁用缓存模式*/
-        BSP_MPU_ConfigRegion(Region, MPU_INSTRUCTION_ACCESS_Enable, MPU_FULL_ACCESS, 1, Address, Size, false, false, false);
+        BSP_MPU_ConfigRegion(Region, MPU_INSTRUCTION_ACCESS_Enable, MPU_FULL_ACCESS, MPU_TEX_LEVEL1, Address, Size, false, false, false);
         break;
 
     case MPU_Device_NonCache:
         /*设置内存为Device类型,共享设置无效，禁止共享，禁用缓存模式*/
-        BSP_MPU_ConfigRegion(Region, MPU_INSTRUCTION_ACCESS_Enable, MPU_FULL_ACCESS, 2, Address, Size, false, false, false);
+        BSP_MPU_ConfigRegion(Region, MPU_INSTRUCTION_ACCESS_Enable, MPU_FULL_ACCESS, MPU_TEX_LEVEL2, Address, Size, false, false, false);
         break;
     }
 }

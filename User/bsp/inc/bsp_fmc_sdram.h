@@ -18,8 +18,8 @@
 #ifndef _BSP_FMC_SDRAM_H
 #define _BSP_FMC_SDRAM_H
 
-#define EXT_SDRAM_ADDR  	((uint32_t)0xC0000000)
-#define EXT_SDRAM_SIZE		(32 * 1024 * 1024)
+#define EXT_SDRAM_ADDR  	((uint32_t)0xD0000000)
+#define EXT_SDRAM_SIZE		(64 * 1024 * 1024)  //64M字节,两片W9825G6KH-6,32MB@16bit组成64M@32bit
 
 /* LCD显存,第1页, 分配2M字节 */
 #define SDRAM_LCD_BUF1 		EXT_SDRAM_ADDR
@@ -30,7 +30,7 @@
 #define SDRAM_LCD_SIZE		(2 * 1024 * 1024)		/* 每层2M */
 #define SDRAM_LCD_LAYER		2						/* 2层 */
 
-/* 剩下的12M字节，提供给应用程序使用 */
+/* 剩下的12M字节，提供给应用程序使用  为什么说是12M，不应该是32 - 2 * 2 = 28M吗？ */
 #define SDRAM_APP_BUF		(EXT_SDRAM_ADDR + SDRAM_LCD_SIZE * SDRAM_LCD_LAYER)
 #define SDRAM_APP_SIZE		(EXT_SDRAM_SIZE - SDRAM_LCD_SIZE * SDRAM_LCD_LAYER)
 
