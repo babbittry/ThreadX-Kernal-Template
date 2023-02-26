@@ -65,7 +65,6 @@
 #ifndef FALSE
 	#define FALSE 0
 #endif
-
 /* 定义优先级分组 */
 #define NVIC_PREEMPT_PRIORITY	4
 
@@ -96,7 +95,7 @@
 //#include "bsp_spi_tm7705.h"
 //#include "bsp_spi_vs1053b.h"
 
-//#include "bsp_fmc_sdram.h"
+#include "bsp_fmc_sdram.h"
 //#include "bsp_fmc_nand_flash.h"
 //#include "bsp_fmc_ad7606.h"
 //#include "bsp_fmc_oled.h"

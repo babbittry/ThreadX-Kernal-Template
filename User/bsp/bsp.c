@@ -15,7 +15,7 @@
 *********************************************************************************************************
 */
 #include "bsp.h"
-
+#include "bsp_fmc_sdram.h"
 
 
 /*
@@ -87,6 +87,7 @@ void bsp_Init(void)
 	// bsp_InitExtIO();	/* 初始化FMC总线74HC574扩展IO. 必须在 bsp_InitLed()前执行 */	
 	bsp_InitLed();    	/* 初始化LED */	
 	bsp_InitTimer();  	/* 初始化滴答定时器 */
+    bsp_InitExtSDRAM(); /* 初始化 SDRAM */
 }
 
 /*
@@ -240,64 +241,9 @@ void Error_Handler(char *file, uint32_t line)
 */
 static void MPU_Config( void )
 {
-	MPU_Region_InitTypeDef MPU_InitStruct;
-
-	/* 禁止 MPU */
-	HAL_MPU_Disable();
-
-    /* 最高性能，读Cache和写Cache都开启 */	
-#if 1
-   	/* 配置AXI SRAM的MPU属性为Write back, Read allocate，Write allocate */
-	MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
-	MPU_InitStruct.BaseAddress      = 0x24000000;
-	MPU_InitStruct.Size             = MPU_REGION_SIZE_512KB;
-	MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
-	MPU_InitStruct.IsBufferable     = MPU_ACCESS_BUFFERABLE;
-	MPU_InitStruct.IsCacheable      = MPU_ACCESS_CACHEABLE;
-	MPU_InitStruct.IsShareable      = MPU_ACCESS_NOT_SHAREABLE;
-	MPU_InitStruct.Number           = MPU_REGION_NUMBER0;
-	MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL1;
-	MPU_InitStruct.SubRegionDisable = 0x00;
-	MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
-
-	HAL_MPU_ConfigRegion(&MPU_InitStruct);
-
-    /* 最低性能，读Cache和写Cache都关闭 */
-#else
-	/* 配置AXI SRAM的MPU属性为NORMAL, NO Read allocate，NO Write allocate */
-	MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
-	MPU_InitStruct.BaseAddress      = 0x24000000;
-	MPU_InitStruct.Size             = MPU_REGION_SIZE_512KB;
-	MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
-	MPU_InitStruct.IsBufferable     = MPU_ACCESS_NOT_BUFFERABLE;
-	MPU_InitStruct.IsCacheable      = MPU_ACCESS_NOT_CACHEABLE;
-	MPU_InitStruct.IsShareable      = MPU_ACCESS_NOT_SHAREABLE;
-	MPU_InitStruct.Number           = MPU_REGION_NUMBER0;
-	MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL1;
-	MPU_InitStruct.SubRegionDisable = 0x00;
-	MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
-
-	HAL_MPU_ConfigRegion(&MPU_InitStruct);
-#endif
-	
-	
-	/* 配置FMC扩展IO的MPU属性为Device或者Strongly Ordered */
-	MPU_InitStruct.Enable           = MPU_REGION_ENABLE;
-	MPU_InitStruct.BaseAddress      = 0x60000000;
-	MPU_InitStruct.Size             = ARM_MPU_REGION_SIZE_64KB;	
-	MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
-	MPU_InitStruct.IsBufferable     = MPU_ACCESS_BUFFERABLE;
-	MPU_InitStruct.IsCacheable      = MPU_ACCESS_NOT_CACHEABLE;	/* 不能用MPU_ACCESS_CACHEABLE;会出现2次CS、WE信号 */
-	MPU_InitStruct.IsShareable      = MPU_ACCESS_NOT_SHAREABLE;
-	MPU_InitStruct.Number           = MPU_REGION_NUMBER1;
-	MPU_InitStruct.TypeExtField     = MPU_TEX_LEVEL0;
-	MPU_InitStruct.SubRegionDisable = 0x00;
-	MPU_InitStruct.DisableExec      = MPU_INSTRUCTION_ACCESS_ENABLE;
-	
-	HAL_MPU_ConfigRegion(&MPU_InitStruct);
-
-	/*使能 MPU */
-	HAL_MPU_Enable(MPU_PRIVILEGED_DEFAULT);
+    /* 配置 MPU */
+    Board_MPU_Config(0, MPU_Normal_WT, 0xD0000000, MPU_64MB);
+    Board_MPU_Config(1, MPU_Normal_WT, 0x24000000, MPU_512KB);
 }
 
 /*
