@@ -537,6 +537,7 @@ static void DispTaskInfo(void)
 
         if(p_tcb == &AppTaskStartTCB) break;
     }
+    App_Printf("===============================================================\r\n");
 }
 
 /***************************** 安富莱电子 www.armfly.com (END OF FILE) *********************************/
