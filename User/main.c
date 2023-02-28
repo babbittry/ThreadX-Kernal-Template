@@ -104,7 +104,7 @@ static  uint64_t    AppTaskStatStk[APP_CFG_TASK_STAT_STK_SIZE/8];
 *********************************************************************************************************
 */
 static  void  AppTaskStart          (ULONG thread_input);
-static  void  AppBlinkPro           (ULONG thread_input);
+static  void  AppTaskBlink          (ULONG thread_input);
 static  void  AppTaskUserIF         (ULONG thread_input);
 static  void  AppTaskCOM            (ULONG thread_input);
 static  void  AppTaskIDLE           (ULONG thread_input);
