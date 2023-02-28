@@ -37,7 +37,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_semaphore_performance_info_get                  PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -76,6 +76,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_semaphore_performance_info_get(TX_SEMAPHORE *semaphore_ptr, ULONG *puts, ULONG *gets,
@@ -91,15 +93,15 @@ UINT                    status;
     /* Determine if this is a legal request.  */
     if (semaphore_ptr == TX_NULL)
     {
-        
+
         /* Semaphore pointer is illegal, return error.  */
         status =  TX_PTR_ERROR;
     }
-    
+
     /* Determine if the semaphore ID is invalid.  */
     else if (semaphore_ptr -> tx_semaphore_id != TX_SEMAPHORE_ID)
     {
-        
+
         /* Semaphore pointer is illegal, return error.  */
         status =  TX_PTR_ERROR;
     }
@@ -121,31 +123,31 @@ UINT                    status;
         /* Retrieve the number of puts on this semaphore.  */
         if (puts != TX_NULL)
         {
-    
+
             *puts =  semaphore_ptr -> tx_semaphore_performance_put_count;
         }
-    
+
         /* Retrieve the number of gets on this semaphore.  */
         if (gets != TX_NULL)
         {
-    
+
             *gets =  semaphore_ptr -> tx_semaphore_performance_get_count;
         }
-    
+
         /* Retrieve the number of suspensions on this semaphore.  */
         if (suspensions != TX_NULL)
         {
-    
+
             *suspensions =  semaphore_ptr -> tx_semaphore_performance_suspension_count;
         }
-    
+
         /* Retrieve the number of timeouts on this semaphore.  */
         if (timeouts != TX_NULL)
         {
-    
+
             *timeouts =  semaphore_ptr -> tx_semaphore_performance_timeout_count;
         }
-    
+
         /* Restore interrupts.  */
         TX_RESTORE
 
@@ -159,37 +161,37 @@ UINT                    status;
     /* Access input arguments just for the sake of lint, MISRA, etc.  */
     if (semaphore_ptr != TX_NULL)
     {
-    
+
         /* Not enabled, return error.  */
         status =  TX_FEATURE_NOT_ENABLED;
     }
     else if (puts != TX_NULL)
     {
-    
+
         /* Not enabled, return error.  */
         status =  TX_FEATURE_NOT_ENABLED;
     }
     else if (gets != TX_NULL)
     {
-    
+
         /* Not enabled, return error.  */
         status =  TX_FEATURE_NOT_ENABLED;
     }
     else if (suspensions != TX_NULL)
     {
-    
+
         /* Not enabled, return error.  */
         status =  TX_FEATURE_NOT_ENABLED;
     }
     else if (timeouts != TX_NULL)
     {
-    
+
         /* Not enabled, return error.  */
         status =  TX_FEATURE_NOT_ENABLED;
     }
     else
     {
-    
+
         /* Not enabled, return error.  */
         status =  TX_FEATURE_NOT_ENABLED;
     }

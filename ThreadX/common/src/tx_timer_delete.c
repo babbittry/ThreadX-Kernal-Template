@@ -35,7 +35,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_timer_delete                                    PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -65,6 +65,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_timer_delete(TX_TIMER *timer_ptr)
@@ -104,7 +106,7 @@ TX_TIMER        *previous_timer;
 
     /* Decrement the number of created timers.  */
     _tx_timer_created_count--;
-    
+
     /* See if the timer is the only one on the list.  */
     if (_tx_timer_created_count == TX_EMPTY)
     {
@@ -124,7 +126,7 @@ TX_TIMER        *previous_timer;
         /* See if we have to update the created list head pointer.  */
         if (_tx_timer_created_ptr == timer_ptr)
         {
-                    
+
             /* Yes, move the head pointer to the next link. */
             _tx_timer_created_ptr =  next_timer;
         }

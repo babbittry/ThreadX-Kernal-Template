@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_mutex_delete                                    PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -71,6 +71,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_mutex_delete(TX_MUTEX *mutex_ptr)
@@ -108,7 +110,7 @@ UINT            status;
 
     /* Decrement the created count.  */
     _tx_mutex_created_count--;
-    
+
     /* See if the mutex is the only one on the list.  */
     if (_tx_mutex_created_count == TX_EMPTY)
     {
@@ -128,7 +130,7 @@ UINT            status;
         /* See if we have to update the created list head pointer.  */
         if (_tx_mutex_created_ptr == mutex_ptr)
         {
-        
+
             /* Yes, move the head pointer to the next link. */
             _tx_mutex_created_ptr =  next_mutex;
         }
@@ -154,7 +156,7 @@ UINT            status;
     {
 
         /* Yes, remove this mutex from the owned list.  */
-        
+
         /* Set the ownership count to 1.  */
         mutex_ptr -> tx_mutex_ownership_count =  ((UINT) 1);
 
@@ -182,14 +184,14 @@ UINT            status;
        on this mutex.  */
     while (suspended_count != ((ULONG) 0))
     {
-      
+
         /* Decrement the suspension count.  */
         suspended_count--;
-      
+
         /* Lockout interrupts.  */
         TX_DISABLE
 
-        /* Clear the cleanup pointer, this prevents the timeout from doing 
+        /* Clear the cleanup pointer, this prevents the timeout from doing
            anything.  */
         thread_ptr -> tx_thread_suspend_cleanup =  TX_NULL;
 
@@ -213,7 +215,7 @@ UINT            status;
 
         /* Restore interrupts.  */
         TX_RESTORE
-    
+
         /* Resume the thread.  */
         _tx_thread_system_resume(thread_ptr);
 #endif

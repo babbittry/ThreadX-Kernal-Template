@@ -37,7 +37,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_queue_performance_system_info_get               PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -78,6 +78,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_queue_performance_system_info_get(ULONG *messages_sent, ULONG *messages_received,
@@ -104,51 +106,51 @@ TX_INTERRUPT_SAVE_AREA
     /* Retrieve the total number of queue messages sent.  */
     if (messages_sent != TX_NULL)
     {
-    
+
         *messages_sent =  _tx_queue_performance_messages_sent_count;
     }
-    
+
     /* Retrieve the total number of queue messages received.  */
     if (messages_received != TX_NULL)
     {
-    
+
         *messages_received =  _tx_queue_performance__messages_received_count;
     }
-    
+
     /* Retrieve the total number of empty queue suspensions.  */
     if (empty_suspensions != TX_NULL)
     {
-    
+
         *empty_suspensions =  _tx_queue_performance_empty_suspension_count;
     }
-    
+
     /* Retrieve the total number of full queue suspensions.  */
     if (full_suspensions != TX_NULL)
     {
-    
+
         *full_suspensions =  _tx_queue_performance_full_suspension_count;
     }
-    
+
     /* Retrieve the total number of full errors.  */
     if (full_errors != TX_NULL)
     {
-    
+
         *full_errors =  _tx_queue_performance_full_error_count;
     }
-    
+
     /* Retrieve the total number of queue timeouts.  */
     if (timeouts != TX_NULL)
     {
-    
+
         *timeouts =  _tx_queue_performance_timeout_count;
     }
-    
+
     /* Restore interrupts.  */
     TX_RESTORE
 
     /* Return completion status.  */
     return(TX_SUCCESS);
-    
+
 #else
 
 UINT        status;

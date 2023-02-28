@@ -35,7 +35,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_thread_wait_abort                               PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -69,6 +69,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_thread_wait_abort(TX_THREAD  *thread_ptr)
@@ -93,14 +95,14 @@ ULONG           suspension_sequence;
     /* Determine if the thread is currently suspended.  */
     if (thread_ptr -> tx_thread_state < TX_SLEEP)
     {
-    
-        /* Thread is either ready, completed, terminated, or in a pure 
+
+        /* Thread is either ready, completed, terminated, or in a pure
            suspension condition.  */
 
         /* Restore interrupts.  */
         TX_RESTORE
 
-        /* Just return with an error message to indicate that 
+        /* Just return with an error message to indicate that
            nothing was done.  */
         status =  TX_WAIT_ABORT_ERROR;
     }
@@ -134,7 +136,7 @@ ULONG           suspension_sequence;
         {
 
             /* Process all other suspension timeouts.  */
-    
+
             /* Set the state to suspended.  */
             thread_ptr -> tx_thread_state =    TX_SUSPENDED;
 
@@ -215,7 +217,7 @@ ULONG           suspension_sequence;
 
             /* Disable interrupts.  */
             TX_DISABLE
-        
+
             /* Decrement the disable preemption flag.  */
             _tx_thread_preempt_disable--;
 
@@ -223,7 +225,7 @@ ULONG           suspension_sequence;
             TX_RESTORE
 #endif
 
-            /* Return with an error message to indicate that 
+            /* Return with an error message to indicate that
                nothing was done.  */
             status =  TX_WAIT_ABORT_ERROR;
         }

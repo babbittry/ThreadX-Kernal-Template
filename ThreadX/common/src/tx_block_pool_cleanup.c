@@ -35,7 +35,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_block_pool_cleanup                              PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -71,6 +71,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 VOID  _tx_block_pool_cleanup(TX_THREAD *thread_ptr, ULONG suspension_sequence)
@@ -85,7 +87,7 @@ UINT                suspended_count;
 TX_THREAD           *next_thread;
 TX_THREAD           *previous_thread;
 
-    
+
 #ifndef TX_NOT_INTERRUPTABLE
 
     /* Disable interrupts to remove the suspended thread from the block pool.  */
@@ -94,7 +96,7 @@ TX_THREAD           *previous_thread;
     /* Determine if the cleanup is still required.  */
     if (thread_ptr -> tx_thread_suspend_cleanup == &(_tx_block_pool_cleanup))
     {
-    
+
         /* Check for valid suspension sequence.  */
         if (suspension_sequence == thread_ptr -> tx_thread_suspension_sequence)
         {
@@ -105,7 +107,7 @@ TX_THREAD           *previous_thread;
             /* Check for a NULL byte pool pointer.  */
             if (pool_ptr != TX_NULL)
             {
-            
+
                 /* Check for valid pool ID.  */
                 if (pool_ptr -> tx_block_pool_id == TX_BLOCK_POOL_ID)
                 {
@@ -131,13 +133,13 @@ TX_THREAD           *previous_thread;
                         suspended_count =  pool_ptr -> tx_block_pool_suspended_count;
 
                         /* Remove the suspended thread from the list.  */
-    
+
                         /* See if this is the only suspended thread on the list.  */
                         if (suspended_count == TX_NO_SUSPENSIONS)
                         {
 
                             /* Yes, the only suspended thread.  */
-    
+
                             /* Update the head pointer.  */
                             pool_ptr -> tx_block_pool_suspension_list =  TX_NULL;
                         }
@@ -155,7 +157,7 @@ TX_THREAD           *previous_thread;
                             /* Determine if we need to update the head pointer.  */
                             if (pool_ptr -> tx_block_pool_suspension_list == thread_ptr)
                             {
-            
+
                                 /* Update the list head pointer.  */
                                 pool_ptr -> tx_block_pool_suspension_list =     next_thread;
                             }
@@ -166,7 +168,7 @@ TX_THREAD           *previous_thread;
                         if (thread_ptr -> tx_thread_state == TX_BLOCK_MEMORY)
                         {
 
-                            /* Timeout condition and the thread still suspended on the block pool.  
+                            /* Timeout condition and the thread still suspended on the block pool.
                                Setup return error status and resume the thread.  */
 
 #ifdef TX_BLOCK_POOL_ENABLE_PERFORMANCE_INFO

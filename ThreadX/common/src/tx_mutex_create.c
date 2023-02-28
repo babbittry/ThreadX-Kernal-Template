@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_mutex_create                                    PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -69,6 +69,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_mutex_create(TX_MUTEX *mutex_ptr, CHAR *name_ptr, UINT inherit)
@@ -86,7 +88,7 @@ TX_MUTEX        *previous_mutex;
     /* Setup the basic mutex fields.  */
     mutex_ptr -> tx_mutex_name =             name_ptr;
     mutex_ptr -> tx_mutex_inherit =          inherit;
-    
+
     /* Disable interrupts to place the mutex on the created list.  */
     TX_DISABLE
 
@@ -124,7 +126,7 @@ TX_MUTEX        *previous_mutex;
 
     /* Increment the ownership count.  */
     _tx_mutex_created_count++;
-    
+
     /* Optional mutex create extended processing.  */
     TX_MUTEX_CREATE_EXTENSION(mutex_ptr)
 

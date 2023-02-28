@@ -34,9 +34,8 @@
     .global     __tx_PendSVHandler                  @ PendSV
     .global     __tx_SysTickHandler                 @ SysTick
     .global     __tx_IntHandler                     @ Int 0
-	.global     __initial_sp
-	.global     __Vectors
-		
+    .global     __initial_sp
+    .global     __Vectors
 @
 @
 SYSTEM_CLOCK      =   480000000
@@ -50,7 +49,7 @@ SYSTICK_CYCLES    =   ((SYSTEM_CLOCK / 1000) -1)
 @/*  FUNCTION                                               RELEASE        */
 @/*                                                                        */
 @/*    _tx_initialize_low_level                          Cortex-M7/AC6     */
-@/*                                                           6.0.2        */
+@/*                                                           6.1          */
 @/*  AUTHOR                                                                */
 @/*                                                                        */
 @/*    William E. Lamie, Microsoft Corporation                             */
@@ -83,10 +82,7 @@ SYSTICK_CYCLES    =   ((SYSTEM_CLOCK / 1000) -1)
 @/*                                                                        */
 @/*    DATE              NAME                      DESCRIPTION             */
 @/*                                                                        */
-@/*  06-30-2020     William E. Lamie         Initial Version 6.0.1         */
-@/*  08-14-2020     Scott Larson             Modified comment(s), clean up */
-@/*                                            whitespace, resulting       */
-@/*                                            in version 6.0.2            */
+@/*  09-30-2020     William E. Lamie         Initial Version 6.1           */
 @/*                                                                        */
 @/**************************************************************************/
 @VOID   _tx_initialize_low_level(VOID)

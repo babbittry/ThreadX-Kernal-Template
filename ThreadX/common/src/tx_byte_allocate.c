@@ -38,7 +38,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_byte_allocate                                   PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -75,6 +75,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_byte_allocate(TX_BYTE_POOL *pool_ptr, VOID **memory_ptr, ULONG memory_size,  ULONG wait_option)
@@ -179,17 +181,17 @@ ULONG                       lower_tbu;
         /* Determine if we are finished.  */
         if (work_ptr != TX_NULL)
         {
-        
+
             /* Yes, we have found a block the search is finished.  */
             finished =  TX_TRUE;
         }
         else
         {
-        
+
             /* No block was found, does this thread still own the pool?  */
             if (pool_ptr -> tx_byte_pool_owner == thread_ptr)
             {
-            
+
                 /* Yes, then we have looked through the entire pool and haven't found the memory.  */
                 finished =  TX_TRUE;
             }
@@ -215,7 +217,7 @@ ULONG                       lower_tbu;
             /* Is the timestamp the same?  */
             if (time_stamp == entry_ptr -> tx_trace_buffer_entry_time_stamp)
             {
-            
+
                 /* Timestamp is the same, update the entry with the address.  */
 #ifdef TX_MISRA_ENABLE
                 entry_ptr -> tx_trace_buffer_entry_info_2 =  TX_POINTER_TO_ULONG_CONVERT(*memory_ptr);
@@ -240,7 +242,7 @@ ULONG                       lower_tbu;
 
         /* Restore interrupts.  */
         TX_RESTORE
-        
+
         /* Set the status to success.  */
         status =  TX_SUCCESS;
     }
@@ -302,7 +304,7 @@ ULONG                       lower_tbu;
 
                 /* Increment the suspension count.  */
                 (pool_ptr -> tx_byte_pool_suspended_count)++;
-            
+
                 /* Setup suspension list.  */
                 if (suspended_count == TX_NO_SUSPENSIONS)
                 {
@@ -364,7 +366,7 @@ ULONG                       lower_tbu;
                     /* Is the timestamp the same?  */
                     if (time_stamp == entry_ptr -> tx_trace_buffer_entry_time_stamp)
                     {
-                
+
                         /* Timestamp is the same, update the entry with the address.  */
 #ifdef TX_MISRA_ENABLE
                         entry_ptr -> tx_trace_buffer_entry_info_2 =  TX_POINTER_TO_ULONG_CONVERT(*memory_ptr);
@@ -394,7 +396,7 @@ ULONG                       lower_tbu;
         }
         else
         {
-    
+
             /* Restore interrupts.  */
             TX_RESTORE
 

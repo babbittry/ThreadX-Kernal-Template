@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_mutex_get                                       PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -70,6 +70,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_mutex_get(TX_MUTEX *mutex_ptr, ULONG wait_option)
@@ -124,7 +126,7 @@ UINT            status;
             /* Determine if priority inheritance is required.  */
             if (mutex_ptr -> tx_mutex_inherit == TX_TRUE)
             {
-         
+
                 /* Remember the current priority of thread.  */
                 mutex_ptr -> tx_mutex_original_priority =   thread_ptr -> tx_thread_priority;
 
@@ -176,7 +178,7 @@ UINT            status;
     else if (mutex_ptr -> tx_mutex_owner == thread_ptr)
     {
 
-        /* The owning thread is requesting the mutex again, just 
+        /* The owning thread is requesting the mutex again, just
            increment the ownership count.  */
         mutex_ptr -> tx_mutex_ownership_count++;
 
@@ -277,7 +279,7 @@ UINT            status;
                     previous_thread -> tx_thread_suspended_next =   thread_ptr;
                     next_thread -> tx_thread_suspended_previous =   thread_ptr;
                 }
-            
+
                 /* Increment the suspension count.  */
                 mutex_ptr -> tx_mutex_suspended_count++;
 
@@ -286,7 +288,7 @@ UINT            status;
 
 #ifdef TX_NOT_INTERRUPTABLE
 
-                /* Determine if we need to raise the priority of the thread 
+                /* Determine if we need to raise the priority of the thread
                    owning the mutex.  */
                 if (mutex_ptr -> tx_mutex_inherit == TX_TRUE)
                 {
@@ -302,7 +304,7 @@ UINT            status;
                     /* Determine if we have to update inherit priority level of the mutex owner.  */
                     if (thread_ptr -> tx_thread_priority < mutex_owner -> tx_thread_inherit_priority)
                     {
-                    
+
                         /* Remember the new priority inheritance priority.  */
                         mutex_owner -> tx_thread_inherit_priority =  thread_ptr -> tx_thread_priority;
                     }
@@ -345,7 +347,7 @@ UINT            status;
                 /* Restore interrupts.  */
                 TX_RESTORE
 
-                /* Determine if we need to raise the priority of the thread 
+                /* Determine if we need to raise the priority of the thread
                    owning the mutex.  */
                 if (mutex_ptr -> tx_mutex_inherit == TX_TRUE)
                 {
@@ -361,7 +363,7 @@ UINT            status;
                     /* Determine if we have to update inherit priority level of the mutex owner.  */
                     if (thread_ptr -> tx_thread_priority < mutex_owner -> tx_thread_inherit_priority)
                     {
-                    
+
                         /* Remember the new priority inheritance priority.  */
                         mutex_owner -> tx_thread_inherit_priority =  thread_ptr -> tx_thread_priority;
                     }

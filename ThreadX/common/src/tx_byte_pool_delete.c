@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_byte_pool_delete                                PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -74,6 +74,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_byte_pool_delete(TX_BYTE_POOL *pool_ptr)
@@ -108,7 +110,7 @@ TX_BYTE_POOL    *previous_pool;
 
     /* Decrement the number of byte pools created.  */
     _tx_byte_pool_created_count--;
-    
+
     /* See if the byte pool is the only one on the list.  */
     if (_tx_byte_pool_created_count == TX_EMPTY)
     {
@@ -128,7 +130,7 @@ TX_BYTE_POOL    *previous_pool;
         /* See if we have to update the created list head pointer.  */
         if (_tx_byte_pool_created_ptr == pool_ptr)
         {
-            
+
             /* Yes, move the head pointer to the next link. */
             _tx_byte_pool_created_ptr =  next_pool;
         }
@@ -142,7 +144,7 @@ TX_BYTE_POOL    *previous_pool;
     pool_ptr -> tx_byte_pool_suspension_list =  TX_NULL;
     suspended_count =                           pool_ptr -> tx_byte_pool_suspended_count;
     pool_ptr -> tx_byte_pool_suspended_count =  TX_NO_SUSPENSIONS;
-    
+
     /* Restore interrupts.  */
     TX_RESTORE
 
@@ -150,14 +152,14 @@ TX_BYTE_POOL    *previous_pool;
        on this byte pool.  */
     while (suspended_count != TX_NO_SUSPENSIONS)
     {
-      
+
         /* Decrement the suspension count.  */
         suspended_count--;
-      
+
         /* Lockout interrupts.  */
         TX_DISABLE
 
-        /* Clear the cleanup pointer, this prevents the timeout from doing 
+        /* Clear the cleanup pointer, this prevents the timeout from doing
            anything.  */
         thread_ptr -> tx_thread_suspend_cleanup =  TX_NULL;
 

@@ -35,7 +35,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_semaphore_cleanup                               PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -71,6 +71,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 VOID  _tx_semaphore_cleanup(TX_THREAD *thread_ptr, ULONG suspension_sequence)
@@ -85,7 +87,7 @@ UINT                suspended_count;
 TX_THREAD           *next_thread;
 TX_THREAD           *previous_thread;
 
-    
+
 
 #ifndef TX_NOT_INTERRUPTABLE
 
@@ -95,7 +97,7 @@ TX_THREAD           *previous_thread;
     /* Determine if the cleanup is still required.  */
     if (thread_ptr -> tx_thread_suspend_cleanup == &(_tx_semaphore_cleanup))
     {
-    
+
         /* Check for valid suspension sequence.  */
         if (suspension_sequence == thread_ptr -> tx_thread_suspension_sequence)
         {
@@ -119,7 +121,7 @@ TX_THREAD           *previous_thread;
                         /* Setup pointer to semaphore control block.  */
                         semaphore_ptr =  TX_VOID_TO_SEMAPHORE_POINTER_CONVERT(thread_ptr -> tx_thread_suspend_control_block);
 #endif
-                
+
                         /* Yes, we still have thread suspension!  */
 
                         /* Clear the suspension cleanup flag.  */
@@ -138,7 +140,7 @@ TX_THREAD           *previous_thread;
                         {
 
                             /* Yes, the only suspended thread.  */
-    
+
                             /* Update the head pointer.  */
                             semaphore_ptr -> tx_semaphore_suspension_list =  TX_NULL;
                         }
@@ -152,7 +154,7 @@ TX_THREAD           *previous_thread;
                             previous_thread =                               thread_ptr -> tx_thread_suspended_previous;
                             next_thread -> tx_thread_suspended_previous =   previous_thread;
                             previous_thread -> tx_thread_suspended_next =   next_thread;
-            
+
                             /* Determine if we need to update the head pointer.  */
                             if (semaphore_ptr -> tx_semaphore_suspension_list == thread_ptr)
                             {

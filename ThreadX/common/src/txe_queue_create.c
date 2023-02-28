@@ -37,7 +37,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_queue_create                                   PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -76,9 +76,11 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _txe_queue_create(TX_QUEUE *queue_ptr, CHAR *name_ptr, UINT message_size, 
+UINT  _txe_queue_create(TX_QUEUE *queue_ptr, CHAR *name_ptr, UINT message_size,
                         VOID *queue_start, ULONG queue_size, UINT queue_control_block_size)
 {
 
@@ -102,7 +104,7 @@ TX_THREAD       *thread_ptr;
         /* Queue pointer is invalid, return appropriate error code.  */
         status =  TX_QUEUE_ERROR;
     }
-    
+
     /* Now check for a valid control block size.  */
     else if (queue_control_block_size != (sizeof(TX_QUEUE)))
     {
@@ -135,7 +137,7 @@ TX_THREAD       *thread_ptr;
             }
             else
             {
-        
+
                 /* Move to the next queue.  */
                 next_queue =  next_queue -> tx_queue_created_next;
             }
@@ -146,7 +148,7 @@ TX_THREAD       *thread_ptr;
 
         /* Decrement the preempt disable flag.  */
         _tx_thread_preempt_disable--;
-    
+
         /* Restore interrupts.  */
         TX_RESTORE
 
@@ -176,7 +178,7 @@ TX_THREAD       *thread_ptr;
             /* Invalid message size specified.  */
             status =  TX_SIZE_ERROR;
         }
-    
+
         /* Check for an invalid message size - greater than 16.  */
         else if (message_size > TX_16_ULONG)
         {
@@ -212,11 +214,11 @@ TX_THREAD       *thread_ptr;
             /* Check for interrupt call.  */
             if (TX_THREAD_GET_SYSTEM_STATE() != ((ULONG) 0))
             {
-    
+
                 /* Now, make sure the call is from an interrupt and not initialization.  */
                 if (TX_THREAD_GET_SYSTEM_STATE() < TX_INITIALIZE_IN_PROGRESS)
                 {
-        
+
                     /* Invalid caller of this function, return appropriate error code.  */
                     status =  TX_CALLER_ERROR;
                 }

@@ -37,7 +37,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_mutex_create                                   PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -75,6 +75,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _txe_mutex_create(TX_MUTEX *mutex_ptr, CHAR *name_ptr, UINT inherit, UINT mutex_control_block_size)
@@ -100,7 +102,7 @@ TX_THREAD       *thread_ptr;
         /* Mutex pointer is invalid, return appropriate error code.  */
         status =  TX_MUTEX_ERROR;
     }
-    
+
     /* Now check to make sure the control block is the correct size.  */
     else if (mutex_control_block_size != (sizeof(TX_MUTEX)))
     {
@@ -144,7 +146,7 @@ TX_THREAD       *thread_ptr;
 
         /* Decrement the preempt disable flag.  */
         _tx_thread_preempt_disable--;
-    
+
         /* Restore interrupts.  */
         TX_RESTORE
 
@@ -160,14 +162,14 @@ TX_THREAD       *thread_ptr;
         }
         else
         {
-        
+
             /* Check for a valid inherit option.  */
             if (inherit != TX_INHERIT)
             {
 
                 if (inherit != TX_NO_INHERIT)
                 {
-        
+
                     /* Inherit option is illegal.  */
                     status =  TX_INHERIT_ERROR;
                 }
@@ -196,11 +198,11 @@ TX_THREAD       *thread_ptr;
         /* Check for interrupt call.  */
         if (TX_THREAD_GET_SYSTEM_STATE() != ((ULONG) 0))
         {
-    
+
             /* Now, make sure the call is from an interrupt and not initialization.  */
             if (TX_THREAD_GET_SYSTEM_STATE() < TX_INITIALIZE_IN_PROGRESS)
             {
-        
+
                 /* Invalid caller of this function, return appropriate error code.  */
                 status =  TX_CALLER_ERROR;
             }

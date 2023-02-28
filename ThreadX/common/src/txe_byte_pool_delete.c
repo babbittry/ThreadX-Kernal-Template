@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_byte_pool_delete                               PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -69,6 +69,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _txe_byte_pool_delete(TX_BYTE_POOL *pool_ptr)
@@ -85,7 +87,7 @@ TX_THREAD       *thread_ptr;
     /* Default status to success.  */
     status =  TX_SUCCESS;
 #endif
-    
+
     /* Check for an invalid byte pool pointer.  */
     if (pool_ptr == TX_NULL)
     {
@@ -105,7 +107,7 @@ TX_THREAD       *thread_ptr;
     /* Check for interrupt or initialization.  */
     else if (TX_THREAD_GET_SYSTEM_STATE() != ((ULONG) 0))
     {
-    
+
         /* Invalid caller of this function, return appropriate error code.  */
         status =  TX_CALLER_ERROR;
     }
@@ -132,7 +134,7 @@ TX_THREAD       *thread_ptr;
 
             /* Call actual byte pool delete function.  */
             status =  _tx_byte_pool_delete(pool_ptr);
-            
+
 #ifndef TX_TIMER_PROCESS_IN_ISR
         }
 #endif

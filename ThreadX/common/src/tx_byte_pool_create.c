@@ -35,7 +35,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_byte_pool_create                                PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -69,6 +69,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_byte_pool_create(TX_BYTE_POOL *pool_ptr, CHAR *name_ptr, VOID *pool_start, ULONG pool_size)
@@ -87,7 +89,7 @@ ALIGN_TYPE          *free_ptr;
     /* Initialize the byte pool control block to all zeros.  */
     TX_MEMSET(pool_ptr, 0, (sizeof(TX_BYTE_POOL)));
 
-    /* Round the pool size down to something that is evenly divisible by 
+    /* Round the pool size down to something that is evenly divisible by
        an ULONG.  */
     pool_size =   (pool_size/(sizeof(ALIGN_TYPE))) * (sizeof(ALIGN_TYPE));
 
@@ -102,17 +104,17 @@ ALIGN_TYPE          *free_ptr;
     pool_ptr -> tx_byte_pool_list =    TX_VOID_TO_UCHAR_POINTER_CONVERT(pool_start);
     pool_ptr -> tx_byte_pool_search =  TX_VOID_TO_UCHAR_POINTER_CONVERT(pool_start);
 
-    /* Initially, the pool will have two blocks.  One large block at the 
+    /* Initially, the pool will have two blocks.  One large block at the
        beginning that is available and a small allocated block at the end
        of the pool that is there just for the algorithm.  Be sure to count
        the available block's header in the available bytes count.  */
     pool_ptr -> tx_byte_pool_available =   pool_size - ((sizeof(VOID *)) + (sizeof(ALIGN_TYPE)));
     pool_ptr -> tx_byte_pool_fragments =   ((UINT) 2);
-    
+
     /* Each block contains a "next" pointer that points to the next block in the pool followed by a ALIGN_TYPE
        field that contains either the constant TX_BYTE_BLOCK_FREE (if the block is free) or a pointer to the
        owning pool (if the block is allocated).  */
-    
+
     /* Calculate the end of the pool's memory area.  */
     block_ptr =  TX_VOID_TO_UCHAR_POINTER_CONVERT(pool_start);
     block_ptr =  TX_UCHAR_POINTER_ADD(block_ptr, pool_size);
@@ -175,7 +177,7 @@ ALIGN_TYPE          *free_ptr;
 
     /* Increment the number of created byte pools.  */
     _tx_byte_pool_created_count++;
-    
+
     /* Optional byte pool create extended processing.  */
     TX_BYTE_POOL_CREATE_EXTENSION(pool_ptr)
 

@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_block_pool_delete                              PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -69,6 +69,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT    _txe_block_pool_delete(TX_BLOCK_POOL *pool_ptr)
@@ -85,7 +87,7 @@ TX_THREAD   *thread_ptr;
     /* Default status to success.  */
     status =  TX_SUCCESS;
 #endif
-    
+
     /* Check for an invalid pool pointer.  */
     if (pool_ptr == TX_NULL)
     {
@@ -97,7 +99,7 @@ TX_THREAD   *thread_ptr;
     /* Now check the pool ID.  */
     else if (pool_ptr -> tx_block_pool_id != TX_BLOCK_POOL_ID)
     {
-    
+
         /* Pool pointer is invalid, return appropriate error code.  */
         status =  TX_POOL_ERROR;
     }
@@ -107,7 +109,7 @@ TX_THREAD   *thread_ptr;
     /* Is the call from an ISR or initialization?  */
     else if (TX_THREAD_GET_SYSTEM_STATE() != ((ULONG) 0))
     {
-    
+
         /* Invalid caller of this function, return appropriate error code.  */
         status =  TX_CALLER_ERROR;
     }
@@ -134,7 +136,7 @@ TX_THREAD   *thread_ptr;
 
             /* Call actual block pool delete function.  */
             status =  _tx_block_pool_delete(pool_ptr);
-            
+
 #ifndef TX_TIMER_PROCESS_IN_ISR
         }
 #endif

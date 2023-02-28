@@ -35,7 +35,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_block_pool_info_get                             PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -73,10 +73,12 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _tx_block_pool_info_get(TX_BLOCK_POOL *pool_ptr, CHAR **name, ULONG *available_blocks, 
-                    ULONG *total_blocks, TX_THREAD **first_suspended, 
+UINT  _tx_block_pool_info_get(TX_BLOCK_POOL *pool_ptr, CHAR **name, ULONG *available_blocks,
+                    ULONG *total_blocks, TX_THREAD **first_suspended,
                     ULONG *suspended_count, TX_BLOCK_POOL **next_pool)
 {
 
@@ -98,42 +100,42 @@ TX_INTERRUPT_SAVE_AREA
     /* Retrieve the name of the block pool.  */
     if (name != TX_NULL)
     {
-    
+
         *name =  pool_ptr -> tx_block_pool_name;
     }
 
     /* Retrieve the number of available blocks in the block pool.  */
     if (available_blocks != TX_NULL)
     {
-    
+
         *available_blocks =  (ULONG) pool_ptr -> tx_block_pool_available;
     }
 
     /* Retrieve the total number of blocks in the block pool.  */
     if (total_blocks != TX_NULL)
     {
-    
+
         *total_blocks =  (ULONG) pool_ptr -> tx_block_pool_total;
     }
 
     /* Retrieve the first thread suspended on this block pool.  */
     if (first_suspended != TX_NULL)
     {
-    
+
         *first_suspended =  pool_ptr -> tx_block_pool_suspension_list;
     }
 
     /* Retrieve the number of threads suspended on this block pool.  */
     if (suspended_count != TX_NULL)
     {
-    
+
         *suspended_count =  (ULONG) pool_ptr -> tx_block_pool_suspended_count;
     }
 
     /* Retrieve the pointer to the next block pool created.  */
     if (next_pool != TX_NULL)
     {
-    
+
         *next_pool =  pool_ptr -> tx_block_pool_created_next;
     }
 
