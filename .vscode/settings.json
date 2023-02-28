@@ -4,6 +4,7 @@
         "bsp.h": "c",
         "bsp_mpu.h": "c",
         "bsp_fmc_sdram.h": "c",
-        "stm32h7xx_hal.h": "c"
+        "stm32h7xx_hal.h": "c",
+        "tx_api.h": "c"
     }
 }

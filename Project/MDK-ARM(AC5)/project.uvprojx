@@ -444,11 +444,6 @@
               <FilePath>..\..\User\bsp\src\bsp_beep.c</FilePath>
             </File>
             <File>
-              <FileName>bsp_fmc_io.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\User\bsp\src\bsp_fmc_io.c</FilePath>
-            </File>
-            <File>
               <FileName>bsp_uart_fifo.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\bsp\src\bsp_uart_fifo.c</FilePath>
@@ -467,6 +462,16 @@
               <FileName>stm32h7xx_hal_timebase_tim.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\bsp\stm32h7xx_hal_timebase_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_fmc_sdram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\bsp\src\bsp_fmc_sdram.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_mpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\bsp\src\bsp_mpu.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -557,6 +562,11 @@
               <FileName>stm32h7xx_hal_mdma.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Libraries\STM32H7xx_HAL_Driver\Src\stm32h7xx_hal_mdma.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32h7xx_hal_sdram.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Libraries\STM32H7xx_HAL_Driver\Src\stm32h7xx_hal_sdram.c</FilePath>
             </File>
           </Files>
         </Group>
