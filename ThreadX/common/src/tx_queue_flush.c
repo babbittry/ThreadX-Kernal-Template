@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_queue_flush                                     PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -70,6 +70,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_queue_flush(TX_QUEUE *queue_ptr)
@@ -111,7 +113,7 @@ TX_THREAD       *thread_ptr;
         if (queue_ptr -> tx_queue_suspended_count != TX_NO_SUSPENSIONS)
         {
 
-            /* Yes, there are threads suspended on this queue, they must be 
+            /* Yes, there are threads suspended on this queue, they must be
                resumed!  */
 
             /* Copy the information into temporary variables.  */
@@ -139,24 +141,24 @@ TX_THREAD       *thread_ptr;
         thread_ptr =  suspension_list;
         while (suspended_count != ((ULONG) 0))
         {
-        
+
             /* Decrement the suspension count.  */
             suspended_count--;
 
             /* Check for a NULL thread pointer.  */
             if (thread_ptr == TX_NULL)
             {
-            
+
                 /* Get out of the loop.  */
                 break;
             }
 
             /* Resume the next suspended thread.  */
-            
+
             /* Lockout interrupts.  */
             TX_DISABLE
 
-            /* Clear the cleanup pointer, this prevents the timeout from doing 
+            /* Clear the cleanup pointer, this prevents the timeout from doing
                anything.  */
             thread_ptr -> tx_thread_suspend_cleanup =  TX_NULL;
 
@@ -180,7 +182,7 @@ TX_THREAD       *thread_ptr;
 
             /* Restore interrupts.  */
             TX_RESTORE
-    
+
             /* Resume the thread.  */
             _tx_thread_system_resume(thread_ptr -> tx_thread_suspended_previous);
 #endif

@@ -35,7 +35,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_timer_delete                                   PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -68,6 +68,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _txe_timer_delete(TX_TIMER *timer_ptr)
@@ -84,14 +86,14 @@ TX_THREAD       *thread_ptr;
     /* Default status to success.  */
     status =  TX_SUCCESS;
 #endif
-    
+
     /* Check for an invalid timer pointer.  */
     if (timer_ptr == TX_NULL)
     {
         /* Timer pointer is invalid, return appropriate error code.  */
         status =  TX_TIMER_ERROR;
     }
-    
+
     /* Now check for invalid timer ID.  */
     else if (timer_ptr -> tx_timer_id != TX_TIMER_ID)
     {
@@ -119,7 +121,7 @@ TX_THREAD       *thread_ptr;
         /* Is the caller the system timer thread?  */
         if (thread_ptr == &_tx_timer_thread)
         {
-        
+
             /* Invalid caller of this function, return appropriate error code.  */
             status =  TX_CALLER_ERROR;
         }

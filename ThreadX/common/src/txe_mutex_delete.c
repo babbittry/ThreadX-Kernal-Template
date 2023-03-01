@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_mutex_delete                                   PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -69,6 +69,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _txe_mutex_delete(TX_MUTEX *mutex_ptr)
@@ -85,7 +87,7 @@ TX_THREAD       *thread_ptr;
     /* Default status to success.  */
     status =  TX_SUCCESS;
 #endif
-    
+
     /* Check for an invalid mutex pointer.  */
     if (mutex_ptr == TX_NULL)
     {
@@ -93,7 +95,7 @@ TX_THREAD       *thread_ptr;
         /* Mutex pointer is invalid, return appropriate error code.  */
         status =  TX_MUTEX_ERROR;
     }
-    
+
     /* Now check for a valid mutex ID.  */
     else if (mutex_ptr -> tx_mutex_id != TX_MUTEX_ID)
     {

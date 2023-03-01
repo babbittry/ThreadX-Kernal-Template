@@ -12,8 +12,8 @@
 
 /**************************************************************************/
 /**************************************************************************/
-/**                                                                       */ 
-/** ThreadX Component                                                     */ 
+/**                                                                       */
+/** ThreadX Component                                                     */
 /**                                                                       */
 /**   Thread                                                              */
 /**                                                                       */
@@ -26,45 +26,49 @@
 /* Include necessary system files.  */
 
 #include "tx_api.h"
+#if defined(TX_MISRA_ENABLE) || defined(TX_ENABLE_STACK_CHECKING)
 #include "tx_thread.h"
 
 
-/**************************************************************************/ 
-/*                                                                        */ 
-/*  FUNCTION                                               RELEASE        */ 
-/*                                                                        */ 
-/*    _tx_thread_stack_error_handler                      PORTABLE C      */ 
-/*                                                           6.0.1        */
+/**************************************************************************/
+/*                                                                        */
+/*  FUNCTION                                               RELEASE        */
+/*                                                                        */
+/*    _tx_thread_stack_error_handler                      PORTABLE C      */
+/*                                                           6.1.1        */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
 /*                                                                        */
 /*  DESCRIPTION                                                           */
-/*                                                                        */ 
-/*    This function processes stack errors detected during run-time. The  */ 
-/*    processing currently consists of a spin loop.                       */ 
-/*                                                                        */ 
-/*  INPUT                                                                 */ 
-/*                                                                        */ 
-/*    thread_ptr                            Thread control block pointer  */ 
-/*                                                                        */ 
-/*  OUTPUT                                                                */ 
-/*                                                                        */ 
-/*    None                                                                */ 
-/*                                                                        */ 
-/*  CALLS                                                                 */ 
-/*                                                                        */ 
-/*    None                                                                */ 
-/*                                                                        */ 
-/*  CALLED BY                                                             */ 
-/*                                                                        */ 
-/*    ThreadX internal code                                               */ 
-/*                                                                        */ 
-/*  RELEASE HISTORY                                                       */ 
-/*                                                                        */ 
+/*                                                                        */
+/*    This function processes stack errors detected during run-time. The  */
+/*    processing currently consists of a spin loop.                       */
+/*                                                                        */
+/*  INPUT                                                                 */
+/*                                                                        */
+/*    thread_ptr                            Thread control block pointer  */
+/*                                                                        */
+/*  OUTPUT                                                                */
+/*                                                                        */
+/*    None                                                                */
+/*                                                                        */
+/*  CALLS                                                                 */
+/*                                                                        */
+/*    None                                                                */
+/*                                                                        */
+/*  CALLED BY                                                             */
+/*                                                                        */
+/*    ThreadX internal code                                               */
+/*                                                                        */
+/*  RELEASE HISTORY                                                       */
+/*                                                                        */
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
-/*  06-30-2020     William E. Lamie         Initial Version 6.0.1         */
+/*  09-30-2020     William E. Lamie         Initial Version 6.1           */
+/*  10-16-2020     William E. Lamie         Modified comment(s),          */
+/*                                            fixed link issue,           */
+/*                                            resulting in version 6.1.1  */
 /*                                                                        */
 /**************************************************************************/
 VOID  _tx_thread_stack_error_handler(TX_THREAD *thread_ptr)
@@ -96,10 +100,11 @@ TX_INTERRUPT_SAVE_AREA
 
         /* Disable interrupts.  */
         TX_DISABLE
-        
+
         /* Restore interrupts.  */
         TX_RESTORE
     }
 #endif
 }
+#endif /* TX_MISRA_ENABLE */
 

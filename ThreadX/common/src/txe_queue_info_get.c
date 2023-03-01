@@ -34,7 +34,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_queue_info_get                                 PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -74,6 +74,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _txe_queue_info_get(TX_QUEUE *queue_ptr, CHAR **name, ULONG *enqueued, ULONG *available_storage,
@@ -90,7 +92,7 @@ UINT    status;
         /* Queue pointer is invalid, return appropriate error code.  */
         status =  TX_QUEUE_ERROR;
     }
-    
+
     /* Now check for a valid queue ID.  */
     else if (queue_ptr -> tx_queue_id != TX_QUEUE_ID)
     {
@@ -102,7 +104,7 @@ UINT    status;
     {
 
         /* Otherwise, call the actual queue information get service.  */
-        status =  _tx_queue_info_get(queue_ptr, name, enqueued, available_storage, first_suspended, 
+        status =  _tx_queue_info_get(queue_ptr, name, enqueued, available_storage, first_suspended,
                                                                     suspended_count, next_queue);
     }
 

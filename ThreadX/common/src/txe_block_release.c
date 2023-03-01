@@ -34,7 +34,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_block_release                                  PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -65,6 +65,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _txe_block_release(VOID *block_ptr)
@@ -86,7 +88,7 @@ UCHAR               *work_ptr;
     else
     {
 
-        /* Pickup the pool pointer which is just previous to the starting 
+        /* Pickup the pool pointer which is just previous to the starting
            address of block that the caller sees.  */
         work_ptr =      TX_VOID_TO_UCHAR_POINTER_CONVERT(block_ptr);
         work_ptr =      TX_UCHAR_POINTER_SUB(work_ptr, (sizeof(UCHAR *)));
@@ -101,7 +103,7 @@ UCHAR               *work_ptr;
             /* Pool pointer is invalid, return appropriate error code.  */
             status =  TX_PTR_ERROR;
         }
-    
+
         /* Now check for invalid pool ID.  */
         else if  (pool_ptr -> tx_block_pool_id != TX_BLOCK_POOL_ID)
         {

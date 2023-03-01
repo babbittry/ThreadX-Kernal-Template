@@ -22,6 +22,7 @@
 
 #define TX_SOURCE_CODE
 
+#ifndef TX_NO_TIMER
 
 /* Include necessary system files.  */
 
@@ -34,7 +35,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_timer_system_activate                           PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -69,6 +70,10 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Scott Larson             Modified comment(s), and      */
+/*                                            opt out of function when    */
+/*                                            TX_NO_TIMER is defined,     */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 VOID  _tx_timer_system_activate(TX_TIMER_INTERNAL *timer_ptr)
@@ -88,11 +93,11 @@ ULONG                       expiration_time;
     /* Determine if there is a timer to activate.  */
     if (remaining_ticks != ((ULONG) 0))
     {
-    
+
         /* Determine if the timer is set to wait forever.  */
         if (remaining_ticks != TX_WAIT_FOREVER)
         {
-    
+
             /* Valid timer activate request.  */
 
             /* Determine if the timer still needs activation.  */
@@ -119,7 +124,7 @@ ULONG                       expiration_time;
 
                 /* At this point, we are ready to put the timer on one of
                    the timer lists.  */
-    
+
                 /* Calculate the proper place for the timer.  */
                 timer_list =  TX_TIMER_POINTER_ADD(_tx_timer_current_ptr, expiration_time);
                 if (TX_TIMER_INDIRECT_TO_VOID_POINTER_CONVERT(timer_list) >= TX_TIMER_INDIRECT_TO_VOID_POINTER_CONVERT(_tx_timer_list_end))
@@ -129,11 +134,11 @@ ULONG                       expiration_time;
                     delta =  TX_TIMER_POINTER_DIF(timer_list, _tx_timer_list_end);
                     timer_list =  TX_TIMER_POINTER_ADD(_tx_timer_list_start, delta);
                 }
-    
+
                 /* Now put the timer on this list.  */
                 if ((*timer_list) == TX_NULL)
                 {
-                
+
                     /* This list is NULL, just put the new timer on it.  */
 
                     /* Setup the links in this timer.  */
@@ -162,3 +167,4 @@ ULONG                       expiration_time;
     }
 }
 
+#endif

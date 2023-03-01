@@ -34,7 +34,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_thread_system_preempt_check                     PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -66,6 +66,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 VOID  _tx_thread_system_preempt_check(VOID)
@@ -82,7 +84,7 @@ TX_THREAD       *thread_ptr;
     /* Determine if we are in a system state (ISR or Initialization) or internal preemption is disabled.  */
     if (combined_flags == ((ULONG) 0))
     {
-    
+
         /* No, at thread execution level so continue checking for preemption.  */
 
         /* Pickup thread pointer.  */

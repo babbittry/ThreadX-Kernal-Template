@@ -39,7 +39,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_mutex_get                                      PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -72,6 +72,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _txe_mutex_get(TX_MUTEX *mutex_ptr, ULONG wait_option)
@@ -93,7 +95,7 @@ TX_THREAD       *current_thread;
         /* Mutex pointer is invalid, return appropriate error code.  */
         status =  TX_MUTEX_ERROR;
     }
-    
+
     /* Now check for a valid mutex ID.  */
     else if (mutex_ptr -> tx_mutex_id != TX_MUTEX_ID)
     {
@@ -104,7 +106,7 @@ TX_THREAD       *current_thread;
     else
     {
 
-        /* Check for a wait option error.  Only threads are allowed any form of 
+        /* Check for a wait option error.  Only threads are allowed any form of
            suspension.  */
         if (wait_option != TX_NO_WAIT)
         {
@@ -143,11 +145,11 @@ TX_THREAD       *current_thread;
         /* Check for interrupt call.  */
         if (TX_THREAD_GET_SYSTEM_STATE() != ((ULONG) 0))
         {
-    
+
             /* Now, make sure the call is from an interrupt and not initialization.  */
             if (TX_THREAD_GET_SYSTEM_STATE() < TX_INITIALIZE_IN_PROGRESS)
             {
-        
+
                 /* Yes, invalid caller of this function, return appropriate error code.  */
                 status =  TX_CALLER_ERROR;
             }

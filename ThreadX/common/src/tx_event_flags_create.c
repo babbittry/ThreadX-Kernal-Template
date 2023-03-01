@@ -35,7 +35,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_event_flags_create                              PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -68,6 +68,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_event_flags_create(TX_EVENT_FLAGS_GROUP *group_ptr, CHAR *name_ptr)
@@ -84,7 +86,7 @@ TX_EVENT_FLAGS_GROUP    *previous_group;
 
     /* Setup the basic event flags group fields.  */
     group_ptr -> tx_event_flags_group_name =             name_ptr;
-    
+
     /* Disable interrupts to put the event flags group on the created list.  */
     TX_DISABLE
 
@@ -119,7 +121,7 @@ TX_EVENT_FLAGS_GROUP    *previous_group;
 
     /* Increment the number of created event flag groups.  */
     _tx_event_flags_created_count++;
-    
+
     /* Optional event flag group create extended processing.  */
     TX_EVENT_FLAGS_GROUP_CREATE_EXTENSION(group_ptr)
 

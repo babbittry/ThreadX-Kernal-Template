@@ -35,7 +35,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_byte_pool_info_get                              PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -73,10 +73,12 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _tx_byte_pool_info_get(TX_BYTE_POOL *pool_ptr, CHAR **name, ULONG *available_bytes, 
-                    ULONG *fragments, TX_THREAD **first_suspended, 
+UINT  _tx_byte_pool_info_get(TX_BYTE_POOL *pool_ptr, CHAR **name, ULONG *available_bytes,
+                    ULONG *fragments, TX_THREAD **first_suspended,
                     ULONG *suspended_count, TX_BYTE_POOL **next_pool)
 {
 
@@ -98,42 +100,42 @@ TX_INTERRUPT_SAVE_AREA
     /* Retrieve the name of the byte pool.  */
     if (name != TX_NULL)
     {
-    
+
         *name =  pool_ptr -> tx_byte_pool_name;
     }
 
     /* Retrieve the number of available bytes in the byte pool.  */
     if (available_bytes != TX_NULL)
     {
-    
+
         *available_bytes =  pool_ptr -> tx_byte_pool_available;
     }
 
     /* Retrieve the total number of bytes in the byte pool.  */
     if (fragments != TX_NULL)
     {
-    
+
         *fragments =  (ULONG) pool_ptr -> tx_byte_pool_fragments;
     }
 
     /* Retrieve the first thread suspended on this byte pool.  */
     if (first_suspended != TX_NULL)
     {
-    
+
         *first_suspended =  pool_ptr -> tx_byte_pool_suspension_list;
     }
 
     /* Retrieve the number of threads suspended on this byte pool.  */
     if (suspended_count != TX_NULL)
     {
-    
+
         *suspended_count =  (ULONG) pool_ptr -> tx_byte_pool_suspended_count;
     }
 
     /* Retrieve the pointer to the next byte pool created.  */
     if (next_pool != TX_NULL)
     {
-    
+
         *next_pool =  pool_ptr -> tx_byte_pool_created_next;
     }
 

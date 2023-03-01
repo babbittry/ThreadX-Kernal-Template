@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_event_flags_get                                PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -77,6 +77,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _txe_event_flags_get(TX_EVENT_FLAGS_GROUP *group_ptr, ULONG requested_flags,
@@ -100,7 +102,7 @@ TX_THREAD       *current_thread;
         /* Event flags group pointer is invalid, return appropriate error code.  */
         status =  TX_GROUP_ERROR;
     }
-    
+
     /* Now check for invalid event group ID.  */
     else if (group_ptr -> tx_event_flags_group_id != TX_EVENT_FLAGS_ID)
     {
@@ -119,7 +121,7 @@ TX_THREAD       *current_thread;
     else
     {
 
-        /* Check for a wait option error.  Only threads are allowed any form of 
+        /* Check for a wait option error.  Only threads are allowed any form of
            suspension.  */
         if (wait_option != TX_NO_WAIT)
         {
@@ -134,7 +136,7 @@ TX_THREAD       *current_thread;
 #ifndef TX_TIMER_PROCESS_IN_ISR
             else
             {
-            
+
                 /* Pickup thread pointer.  */
                 TX_THREAD_GET_CURRENT(current_thread)
 
@@ -153,7 +155,7 @@ TX_THREAD       *current_thread;
     /* Is everything still okay?  */
     if (status == TX_SUCCESS)
     {
-    
+
         /* Check for invalid get option.  */
         if (get_option > TX_AND_CLEAR)
         {

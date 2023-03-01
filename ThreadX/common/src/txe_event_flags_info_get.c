@@ -34,7 +34,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_event_flags_info_get                           PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -76,10 +76,12 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _txe_event_flags_info_get(TX_EVENT_FLAGS_GROUP *group_ptr, CHAR **name, ULONG *current_flags, 
-                    TX_THREAD **first_suspended, ULONG *suspended_count, 
+UINT  _txe_event_flags_info_get(TX_EVENT_FLAGS_GROUP *group_ptr, CHAR **name, ULONG *current_flags,
+                    TX_THREAD **first_suspended, ULONG *suspended_count,
                     TX_EVENT_FLAGS_GROUP **next_group)
 {
 
@@ -93,7 +95,7 @@ UINT        status;
         /* Event flags group pointer is invalid, return appropriate error code.  */
         status =  TX_GROUP_ERROR;
     }
-    
+
     /* Now check for invalid event flag group ID.  */
     else if (group_ptr -> tx_event_flags_group_id != TX_EVENT_FLAGS_ID)
     {
@@ -105,7 +107,7 @@ UINT        status;
     {
 
         /* Otherwise, call the actual event flags group information get service.  */
-        status =  _tx_event_flags_info_get(group_ptr, name, current_flags, first_suspended, 
+        status =  _tx_event_flags_info_get(group_ptr, name, current_flags, first_suspended,
                                                             suspended_count, next_group);
     }
 

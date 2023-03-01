@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_timer_change                                   PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -72,6 +72,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _txe_timer_change(TX_TIMER *timer_ptr, ULONG initial_ticks, ULONG reschedule_ticks)
@@ -87,7 +89,7 @@ UINT    status;
         /* Timer pointer is invalid, return appropriate error code.  */
         status =  TX_TIMER_ERROR;
     }
-    
+
     /* Now check for invalid timer ID.  */
     else if (timer_ptr -> tx_timer_id != TX_TIMER_ID)
     {
@@ -117,7 +119,7 @@ UINT    status;
         /* Call actual application timer function.  */
         status =  _tx_timer_change(timer_ptr, initial_ticks, reschedule_ticks);
     }
-    
+
     /* Return completion status.  */
     return(status);
 }

@@ -35,7 +35,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_semaphore_create                                PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -68,6 +68,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_semaphore_create(TX_SEMAPHORE *semaphore_ptr, CHAR *name_ptr, ULONG initial_count)
@@ -85,7 +87,7 @@ TX_SEMAPHORE    *previous_semaphore;
     /* Setup the basic semaphore fields.  */
     semaphore_ptr -> tx_semaphore_name =             name_ptr;
     semaphore_ptr -> tx_semaphore_count =            initial_count;
-    
+
     /* Disable interrupts to place the semaphore on the created list.  */
     TX_DISABLE
 
@@ -117,7 +119,7 @@ TX_SEMAPHORE    *previous_semaphore;
         semaphore_ptr -> tx_semaphore_created_previous =  previous_semaphore;
         semaphore_ptr -> tx_semaphore_created_next =      next_semaphore;
     }
-    
+
     /* Increment the created count.  */
     _tx_semaphore_created_count++;
 

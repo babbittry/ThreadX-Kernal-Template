@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_thread_system_suspend                           PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*                                                                        */
 /*  AUTHOR                                                                */
 /*                                                                        */
@@ -76,6 +76,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 VOID  _tx_thread_system_suspend(TX_THREAD *thread_ptr)
@@ -83,7 +85,7 @@ VOID  _tx_thread_system_suspend(TX_THREAD *thread_ptr)
 {
 
 TX_INTERRUPT_SAVE_AREA
- 
+
 UINT            priority;
 UINT            base_priority;
 ULONG           priority_map;
@@ -134,7 +136,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
             /* Make sure the suspension is not a wait-forever.  */
             if (timeout != TX_WAIT_FOREVER)
             {
-            
+
                 /* Activate the thread timer with the timeout value setup in the caller.  */
                 _tx_timer_system_activate(&(thread_ptr -> tx_thread_timer));
             }
@@ -144,7 +146,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
         _tx_timer_time_slice =  thread_ptr -> tx_thread_new_time_slice;
     }
 #endif
-    
+
     /* Decrease the preempt disabled count.  */
     _tx_thread_preempt_disable--;
 
@@ -180,7 +182,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
 #ifdef TX_ENABLE_EVENT_TRACE
 
         /* Save the time stamp for later comparison to verify that
-           the event hasn't been overwritten by the time we have 
+           the event hasn't been overwritten by the time we have
            computed the next thread to execute.  */
         if (entry_ptr != TX_NULL)
         {
@@ -254,7 +256,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
         else
         {
 
-            /* This is the only thread at this priority ready to run.  Set the head 
+            /* This is the only thread at this priority ready to run.  Set the head
                pointer to NULL.  */
             _tx_thread_priority_list[priority] =    TX_NULL;
 
@@ -346,13 +348,13 @@ ULONG                       time_stamp =  ((ULONG) 0);
                    suspend event. In that case, do nothing here.  */
                 if (entry_ptr != TX_NULL)
                 {
-            
+
                     /* Is the timestamp the same?  */
                     if (time_stamp == entry_ptr -> tx_trace_buffer_entry_time_stamp)
                     {
-    
+
                         /* Timestamp is the same, set the "next thread pointer" to the new value of the
-                           next thread to execute. This can be used by the trace analysis tool to keep 
+                           next thread to execute. This can be used by the trace analysis tool to keep
                            track of next thread execution.  */
                         entry_ptr -> tx_trace_buffer_entry_information_field_4 =  0;
                     }
@@ -384,9 +386,9 @@ ULONG                       time_stamp =  ((ULONG) 0);
             }
             else
             {
-            
+
                 /* Other threads at different priority levels are ready to run.  */
-            
+
                 /* Calculate the lowest bit set in the priority map. */
                 TX_LOWEST_SET_BIT_CALCULATE(priority_map, priority_bit)
 
@@ -461,7 +463,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
                 if (_tx_thread_highest_priority >= (_tx_thread_priority_list[priority] -> tx_thread_preempt_threshold))
                 {
 
-                    /* Thread not allowed to execute until earlier preempted thread finishes or lowers its 
+                    /* Thread not allowed to execute until earlier preempted thread finishes or lowers its
                        preemption-threshold.  */
                     _tx_thread_execute_ptr =  _tx_thread_priority_list[priority];
 
@@ -474,7 +476,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
                     /* Determine if there are any other bits set in this preempt map.  */
                     if (_tx_thread_preempted_maps[MAP_INDEX] == ((ULONG) 0))
                     {
-    
+
                         /* No, clear the active bit to signify this preempt map has nothing set.  */
                         TX_DIV32_BIT_SET(priority, priority_bit)
                         _tx_thread_preempted_map_active =  _tx_thread_preempted_map_active & (~(priority_bit));
@@ -491,18 +493,18 @@ ULONG                       time_stamp =  ((ULONG) 0);
             /* Is the execute pointer different?  */
             if (_tx_thread_performance_execute_log[_tx_thread_performance__execute_log_index] != _tx_thread_execute_ptr)
             {
-                     
+
                 /* Move to next entry.  */
                 _tx_thread_performance__execute_log_index++;
-            
+
                 /* Check for wrap condition.  */
                 if (_tx_thread_performance__execute_log_index >= TX_THREAD_EXECUTE_LOG_SIZE)
                 {
-          
+
                     /* Set the index to the beginning.  */
                     _tx_thread_performance__execute_log_index =  ((UINT) 0);
                 }
-            
+
                 /* Log the new execute pointer.  */
                 _tx_thread_performance_execute_log[_tx_thread_performance__execute_log_index] =  _tx_thread_execute_ptr;
             }
@@ -515,13 +517,13 @@ ULONG                       time_stamp =  ((ULONG) 0);
                suspend event. In that case, do nothing here.  */
             if (entry_ptr != TX_NULL)
             {
-            
+
                 /* Is the timestamp the same?  */
                 if (time_stamp == entry_ptr -> tx_trace_buffer_entry_time_stamp)
                 {
-    
+
                     /* Timestamp is the same, set the "next thread pointer" to the new value of the
-                       next thread to execute. This can be used by the trace analysis tool to keep 
+                       next thread to execute. This can be used by the trace analysis tool to keep
                        track of next thread execution.  */
                     entry_ptr -> tx_trace_buffer_entry_information_field_4 =  TX_POINTER_TO_ULONG_CONVERT(_tx_thread_execute_ptr);
                 }
@@ -557,18 +559,18 @@ ULONG                       time_stamp =  ((ULONG) 0);
         /* Is the execute pointer different?  */
         if (_tx_thread_performance_execute_log[_tx_thread_performance__execute_log_index] != _tx_thread_execute_ptr)
         {
-                     
+
             /* Move to next entry.  */
             _tx_thread_performance__execute_log_index++;
-            
+
             /* Check for wrap condition.  */
             if (_tx_thread_performance__execute_log_index >= TX_THREAD_EXECUTE_LOG_SIZE)
             {
-          
+
                 /* Set the index to the beginning.  */
                 _tx_thread_performance__execute_log_index =  ((UINT) 0);
             }
-            
+
             /* Log the new execute pointer.  */
             _tx_thread_performance_execute_log[_tx_thread_performance__execute_log_index] =  _tx_thread_execute_ptr;
         }
@@ -581,13 +583,13 @@ ULONG                       time_stamp =  ((ULONG) 0);
             suspend event. In that case, do nothing here.  */
          if (entry_ptr != TX_NULL)
          {
-            
+
             /* Is the timestamp the same?  */
             if (time_stamp == entry_ptr -> tx_trace_buffer_entry_time_stamp)
             {
-    
+
                 /* Timestamp is the same, set the "next thread pointer" to the new value of the
-                   next thread to execute. This can be used by the trace analysis tool to keep 
+                   next thread to execute. This can be used by the trace analysis tool to keep
                    track of next thread execution.  */
 #ifdef TX_MISRA_ENABLE
                 entry_ptr -> tx_trace_buffer_entry_info_4 =  TX_POINTER_TO_ULONG_CONVERT(_tx_thread_execute_ptr);
@@ -653,14 +655,14 @@ ULONG                       time_stamp =  ((ULONG) 0);
 TX_INTERRUPT_SAVE_AREA
 
 ULONG       wait_option;
-    
+
     /* Disable interrupts.  */
     TX_DISABLE
 
     /* Determine if the thread is still suspending.  */
     if (thread_ptr -> tx_thread_suspending == TX_TRUE)
     {
-    
+
         /* Yes, prepare to call the non-interruptable system suspend function.  */
 
         /* Clear the thread suspending flag.  */
@@ -668,7 +670,7 @@ ULONG       wait_option;
 
         /* Pickup the wait option.  */
         wait_option =  thread_ptr -> tx_thread_timer.tx_timer_internal_remaining_ticks;
-        
+
         /* Decrement the preempt disable count.  */
         _tx_thread_preempt_disable--;
 
@@ -688,7 +690,7 @@ ULONG       wait_option;
 
 VOID  _tx_thread_system_ni_suspend(TX_THREAD *thread_ptr, ULONG wait_option)
 {
- 
+
 UINT            priority;
 UINT            base_priority;
 ULONG           priority_map;
@@ -717,7 +719,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
     /* Determine if a timeout needs to be activated.  */
     if (thread_ptr == current_thread)
     {
-    
+
         /* Is there a wait option?  */
         if (wait_option != TX_NO_WAIT)
         {
@@ -725,7 +727,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
             /* Make sure it is not a wait-forever option.  */
             if (wait_option != TX_WAIT_FOREVER)
             {
-            
+
                 /* Setup the wait option.  */
                 thread_ptr -> tx_thread_timer.tx_timer_internal_remaining_ticks =  wait_option;
 
@@ -733,7 +735,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
                 _tx_timer_system_activate(&(thread_ptr -> tx_thread_timer));
             }
         }
-               
+
         /* Reset time slice for current thread.  */
         _tx_timer_time_slice =  thread_ptr -> tx_thread_new_time_slice;
     }
@@ -772,7 +774,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
 #ifdef TX_ENABLE_EVENT_TRACE
 
     /* Save the time stamp for later comparison to verify that
-       the event hasn't been overwritten by the time we have 
+       the event hasn't been overwritten by the time we have
        computed the next thread to execute.  */
     if (entry_ptr != TX_NULL)
     {
@@ -843,7 +845,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
     else
     {
 
-        /* This is the only thread at this priority ready to run.  Set the head 
+        /* This is the only thread at this priority ready to run.  Set the head
            pointer to NULL.  */
         _tx_thread_priority_list[priority] =    TX_NULL;
 
@@ -935,13 +937,13 @@ ULONG                       time_stamp =  ((ULONG) 0);
                suspend event. In that case, do nothing here.  */
             if (entry_ptr != TX_NULL)
             {
-            
+
                 /* Is the timestamp the same?  */
                 if (time_stamp == entry_ptr -> tx_trace_buffer_entry_time_stamp)
                 {
-    
+
                     /* Timestamp is the same, set the "next thread pointer" to the new value of the
-                       next thread to execute. This can be used by the trace analysis tool to keep 
+                       next thread to execute. This can be used by the trace analysis tool to keep
                        track of next thread execution.  */
                     entry_ptr -> tx_trace_buffer_entry_information_field_4 =  0;
                 }
@@ -970,7 +972,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
         }
         else
         {
-            
+
             /* Calculate the lowest bit set in the priority map. */
             TX_LOWEST_SET_BIT_CALCULATE(priority_map, priority_bit)
 
@@ -978,7 +980,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
             _tx_thread_highest_priority =  base_priority + ((UINT) priority_bit);
         }
     }
-        
+
     /* Determine if the suspending thread is the thread designated to execute.  */
     if (thread_ptr == _tx_thread_execute_ptr)
     {
@@ -1036,7 +1038,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
             if (_tx_thread_highest_priority >= (_tx_thread_priority_list[priority] -> tx_thread_preempt_threshold))
             {
 
-                /* Thread not allowed to execute until earlier preempted thread finishes or lowers its 
+                /* Thread not allowed to execute until earlier preempted thread finishes or lowers its
                    preemption-threshold.  */
                 _tx_thread_execute_ptr =  _tx_thread_priority_list[priority];
 
@@ -1049,7 +1051,7 @@ ULONG                       time_stamp =  ((ULONG) 0);
                 /* Determine if there are any other bits set in this preempt map.  */
                 if (_tx_thread_preempted_maps[MAP_INDEX] == ((ULONG) 0))
                 {
-    
+
                     /* No, clear the active bit to signify this preempt map has nothing set.  */
                     TX_DIV32_BIT_SET(priority, priority_bit)
                     _tx_thread_preempted_map_active =  _tx_thread_preempted_map_active & (~(priority_bit));
@@ -1066,18 +1068,18 @@ ULONG                       time_stamp =  ((ULONG) 0);
         /* Is the execute pointer different?  */
         if (_tx_thread_performance_execute_log[_tx_thread_performance__execute_log_index] != _tx_thread_execute_ptr)
         {
-                     
+
             /* Move to next entry.  */
             _tx_thread_performance__execute_log_index++;
-            
+
             /* Check for wrap condition.  */
             if (_tx_thread_performance__execute_log_index >= TX_THREAD_EXECUTE_LOG_SIZE)
             {
-          
+
                 /* Set the index to the beginning.  */
                 _tx_thread_performance__execute_log_index =  ((UINT) 0);
             }
-            
+
             /* Log the new execute pointer.  */
             _tx_thread_performance_execute_log[_tx_thread_performance__execute_log_index] =  _tx_thread_execute_ptr;
         }
@@ -1090,13 +1092,13 @@ ULONG                       time_stamp =  ((ULONG) 0);
            suspend event. In that case, do nothing here.  */
         if (entry_ptr != TX_NULL)
         {
-            
+
             /* Is the timestamp the same?  */
             if (time_stamp == entry_ptr -> tx_trace_buffer_entry_time_stamp)
             {
-    
+
                 /* Timestamp is the same, set the "next thread pointer" to the new value of the
-                   next thread to execute. This can be used by the trace analysis tool to keep 
+                   next thread to execute. This can be used by the trace analysis tool to keep
                    track of next thread execution.  */
                 entry_ptr -> tx_trace_buffer_entry_information_field_4 =  TX_POINTER_TO_ULONG_CONVERT(_tx_thread_execute_ptr);
             }
@@ -1129,18 +1131,18 @@ ULONG                       time_stamp =  ((ULONG) 0);
     /* Is the execute pointer different?  */
     if (_tx_thread_performance_execute_log[_tx_thread_performance__execute_log_index] != _tx_thread_execute_ptr)
     {
-                     
+
         /* Move to next entry.  */
         _tx_thread_performance__execute_log_index++;
-            
+
         /* Check for wrap condition.  */
         if (_tx_thread_performance__execute_log_index >= TX_THREAD_EXECUTE_LOG_SIZE)
         {
-          
+
             /* Set the index to the beginning.  */
             _tx_thread_performance__execute_log_index =  ((UINT) 0);
         }
-            
+
         /* Log the new execute pointer.  */
         _tx_thread_performance_execute_log[_tx_thread_performance__execute_log_index] =  _tx_thread_execute_ptr;
     }
@@ -1153,13 +1155,13 @@ ULONG                       time_stamp =  ((ULONG) 0);
        suspend event. In that case, do nothing here.  */
     if (entry_ptr != TX_NULL)
     {
-        
+
         /* Is the timestamp the same?  */
         if (time_stamp == entry_ptr -> tx_trace_buffer_entry_time_stamp)
         {
 
             /* Timestamp is the same, set the "next thread pointer" to the new value of the
-               next thread to execute. This can be used by the trace analysis tool to keep 
+               next thread to execute. This can be used by the trace analysis tool to keep
                track of next thread execution.  */
 #ifdef TX_MISRA_ENABLE
             entry_ptr -> tx_trace_buffer_entry_info_4 =  TX_POINTER_TO_ULONG_CONVERT(_tx_thread_execute_ptr);

@@ -35,7 +35,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_initialize_kernel_setup                         PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -69,13 +69,15 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 VOID  _tx_initialize_kernel_setup(VOID)
 {
 
-    /* Ensure that the system state variable is set to indicate 
-       initialization is in progress.  Note that this variable is 
+    /* Ensure that the system state variable is set to indicate
+       initialization is in progress.  Note that this variable is
        later used to represent interrupt nesting.  */
     _tx_thread_system_state =  TX_INITIALIZE_IN_PROGRESS;
 
@@ -85,9 +87,9 @@ VOID  _tx_initialize_kernel_setup(VOID)
     /* Invoke the low-level initialization to handle all processor specific
        initialization issues.  */
     _tx_initialize_low_level();
-    
-    /* Invoke the high-level initialization to exercise all of the 
-       ThreadX components and the application's initialization 
+
+    /* Invoke the high-level initialization to exercise all of the
+       ThreadX components and the application's initialization
        function.  */
     _tx_initialize_high_level();
 

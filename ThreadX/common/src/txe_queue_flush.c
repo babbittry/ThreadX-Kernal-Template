@@ -34,7 +34,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_queue_flush                                    PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -66,6 +66,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _txe_queue_flush(TX_QUEUE *queue_ptr)
@@ -81,7 +83,7 @@ UINT        status;
         /* Queue pointer is invalid, return appropriate error code.  */
         status =  TX_QUEUE_ERROR;
     }
-    
+
     /* Now check for invalid queue ID.  */
     else if (queue_ptr -> tx_queue_id != TX_QUEUE_ID)
     {

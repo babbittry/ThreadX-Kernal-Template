@@ -60,7 +60,7 @@ TX_TRACE_BUFFER_ENTRY             *_tx_trace_buffer_end_ptr;
 TX_TRACE_BUFFER_ENTRY             *_tx_trace_buffer_current_ptr;
 
 
-/* Define the trace event enable bits, where each bit represents a type of event that can be enabled 
+/* Define the trace event enable bits, where each bit represents a type of event that can be enabled
    or disabled dynamically by the application.  */
 
 ULONG                            _tx_trace_event_enable_bits;
@@ -72,9 +72,9 @@ ULONG                            _tx_trace_event_enable_bits;
 ULONG                             _tx_trace_simulated_time;
 
 
-/* Define the function pointer used to call the application when the trace buffer wraps. If NULL, 
+/* Define the function pointer used to call the application when the trace buffer wraps. If NULL,
    the application has not registered a callback function.  */
-   
+
 VOID                             (*_tx_trace_full_notify_function)(VOID *buffer);
 
 
@@ -100,7 +100,7 @@ ULONG                             _tx_trace_registry_search_start;
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_trace_initialize                                PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -131,6 +131,8 @@ ULONG                             _tx_trace_registry_search_start;
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 VOID  _tx_trace_initialize(VOID)

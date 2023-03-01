@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_queue_delete                                    PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -69,6 +69,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_queue_delete(TX_QUEUE *queue_ptr)
@@ -123,7 +125,7 @@ TX_QUEUE        *previous_queue;
         /* See if we have to update the created list head pointer.  */
         if (_tx_queue_created_ptr == queue_ptr)
         {
-        
+
             /* Yes, move the head pointer to the next link. */
             _tx_queue_created_ptr =  next_queue;
         }
@@ -145,14 +147,14 @@ TX_QUEUE        *previous_queue;
        on this queue.  */
     while (suspended_count != TX_NO_SUSPENSIONS)
     {
-      
+
         /* Decrement the suspension count.  */
         suspended_count--;
 
         /* Lockout interrupts.  */
         TX_DISABLE
 
-        /* Clear the cleanup pointer, this prevents the timeout from doing 
+        /* Clear the cleanup pointer, this prevents the timeout from doing
            anything.  */
         thread_ptr -> tx_thread_suspend_cleanup =  TX_NULL;
 

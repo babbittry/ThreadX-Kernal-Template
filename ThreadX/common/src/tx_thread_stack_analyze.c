@@ -34,7 +34,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_thread_stack_analyze                            PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -66,6 +66,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 VOID  _tx_thread_stack_analyze(TX_THREAD *thread_ptr)
@@ -92,7 +94,7 @@ ULONG       size;
 
             /* Pickup the current stack variables.  */
             stack_lowest =   TX_VOID_TO_ULONG_POINTER_CONVERT(thread_ptr -> tx_thread_stack_start);
-    
+
             /* Determine if the pointer is null.  */
             if (stack_lowest != TX_NULL)
             {
@@ -103,11 +105,11 @@ ULONG       size;
                 /* Determine if the pointer is null.  */
                 if (stack_highest != TX_NULL)
                 {
-    
+
                     /* Restore interrupts.  */
                     TX_RESTORE
 
-                    /* We need to binary search the remaining stack for missing 0xEFEFEFEF 32-bit data pattern. 
+                    /* We need to binary search the remaining stack for missing 0xEFEFEFEF 32-bit data pattern.
                        This is a best effort algorithm to find the highest stack usage. */
                     do
                     {
@@ -135,7 +137,7 @@ ULONG       size;
                     /* Position to first used word - at this point we are within a few words.  */
                     while (*stack_ptr == TX_STACK_FILL)
                     {
-            
+
                         /* Position to next word in stack.  */
                         stack_ptr =  TX_ULONG_POINTER_ADD(stack_ptr, 1);
                     }
@@ -151,19 +153,19 @@ ULONG       size;
                     {
 
                         /* Yes, thread is still created.  */
-        
+
                         /* Now check the new highest stack pointer is past the stack start.  */
                         if (stack_ptr > (TX_VOID_TO_ULONG_POINTER_CONVERT(thread_ptr -> tx_thread_stack_start)))
                         {
-        
+
                             /* Yes, now check that the new highest stack pointer is less than the previous highest stack pointer.  */
                             if (stack_ptr < (TX_VOID_TO_ULONG_POINTER_CONVERT(thread_ptr -> tx_thread_stack_highest_ptr)))
                             {
-            
+
                                 /* Yes, is the current highest stack pointer pointing at used memory?  */
                                 if (*stack_ptr != TX_STACK_FILL)
                                 {
-        
+
                                     /* Yes, setup the highest stack usage.  */
                                     thread_ptr -> tx_thread_stack_highest_ptr =  stack_ptr;
                                 }

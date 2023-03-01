@@ -34,7 +34,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _txe_block_pool_info_get                            PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -74,10 +74,12 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _txe_block_pool_info_get(TX_BLOCK_POOL *pool_ptr, CHAR **name, ULONG *available_blocks, 
-                    ULONG *total_blocks, TX_THREAD **first_suspended, 
+UINT  _txe_block_pool_info_get(TX_BLOCK_POOL *pool_ptr, CHAR **name, ULONG *available_blocks,
+                    ULONG *total_blocks, TX_THREAD **first_suspended,
                     ULONG *suspended_count, TX_BLOCK_POOL **next_pool)
 {
 
@@ -104,7 +106,7 @@ UINT    status;
     {
 
         /* Otherwise, call the actual block pool information get service.  */
-        status =  _tx_block_pool_info_get(pool_ptr, name, available_blocks, 
+        status =  _tx_block_pool_info_get(pool_ptr, name, available_blocks,
                         total_blocks, first_suspended, suspended_count, next_pool);
     }
 

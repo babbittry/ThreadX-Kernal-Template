@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_thread_terminate                                PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -73,6 +73,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_thread_terminate(TX_THREAD *thread_ptr)
@@ -199,7 +201,7 @@ ULONG       suspension_sequence;
             /* Thread state change.  */
             TX_THREAD_STATE_CHANGE(thread_ptr, TX_TERMINATED)
 
-            /* Set the suspending flag.  This prevents the thread from being 
+            /* Set the suspending flag.  This prevents the thread from being
                resumed before the cleanup routine is executed.  */
             thread_ptr -> tx_thread_suspending =  TX_TRUE;
 
@@ -277,7 +279,7 @@ ULONG       suspension_sequence;
         if (_tx_thread_mutex_release != TX_NULL)
         {
 
-            /* Yes, call the mutex release function via a function pointer that 
+            /* Yes, call the mutex release function via a function pointer that
                is setup during initialization.  */
             (_tx_thread_mutex_release)(thread_ptr);
         }

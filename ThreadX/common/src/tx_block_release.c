@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_block_release                                   PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -68,6 +68,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_block_release(VOID *block_ptr)
@@ -88,7 +90,7 @@ TX_THREAD           *previous_thread;
     /* Disable interrupts to put this block back in the pool.  */
     TX_DISABLE
 
-    /* Pickup the pool pointer which is just previous to the starting 
+    /* Pickup the pool pointer which is just previous to the starting
        address of the block that the caller sees.  */
     work_ptr =        TX_VOID_TO_UCHAR_POINTER_CONVERT(block_ptr);
     work_ptr =        TX_UCHAR_POINTER_SUB(work_ptr, (sizeof(UCHAR *)));
@@ -119,7 +121,7 @@ TX_THREAD           *previous_thread;
 
         /* Decrement the number of threads suspended.  */
         (pool_ptr -> tx_block_pool_suspended_count)--;
-        
+
         /* Pickup the suspended count.  */
         suspended_count =  (pool_ptr -> tx_block_pool_suspended_count);
 
@@ -146,7 +148,7 @@ TX_THREAD           *previous_thread;
             next_thread -> tx_thread_suspended_previous =  previous_thread;
             previous_thread -> tx_thread_suspended_next =  next_thread;
         }
- 
+
         /* Prepare for resumption of the first thread.  */
 
         /* Clear cleanup routine to avoid timeout.  */

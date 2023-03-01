@@ -34,7 +34,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_trace_user_event_insert                         PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -68,6 +68,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_trace_user_event_insert(ULONG event_id, ULONG info_field_1, ULONG info_field_2, ULONG info_field_3, ULONG info_field_4)
@@ -86,7 +88,7 @@ UINT            status;
     /* Determine if trace is disabled.  */
     if (_tx_trace_buffer_current_ptr == TX_NULL)
     {
-    
+
         /* Yes, trace is already disabled.  */
         status =  TX_NOT_DONE;
     }
@@ -99,7 +101,7 @@ UINT            status;
 #else
         TX_TRACE_IN_LINE_INSERT(event_id, info_field_1, info_field_2, info_field_3, info_field_4, TX_TRACE_USER_EVENTS)
 #endif
-        
+
         /* Return successful status.  */
         status =  TX_SUCCESS;
     }
@@ -109,7 +111,7 @@ UINT            status;
 
     /* Return completion status.  */
     return(status);
-    
+
 #else
 
 UINT        status;

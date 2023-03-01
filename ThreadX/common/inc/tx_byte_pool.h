@@ -26,7 +26,7 @@
 /*  COMPONENT DEFINITION                                   RELEASE        */
 /*                                                                        */
 /*    tx_byte_pool.h                                      PORTABLE C      */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -42,6 +42,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 
@@ -66,12 +68,12 @@
 #endif
 
 
-/* Determine if in-line component initialization is supported by the 
+/* Determine if in-line component initialization is supported by the
    caller.  */
 
 #ifdef TX_INVOKE_INLINE_INITIALIZATION
 
-/* Yes, in-line initialization is supported, remap the byte memory pool 
+/* Yes, in-line initialization is supported, remap the byte memory pool
    initialization function.  */
 
 #ifndef TX_BYTE_POOL_ENABLE_PERFORMANCE_INFO

@@ -36,7 +36,7 @@
 /*  FUNCTION                                               RELEASE        */
 /*                                                                        */
 /*    _tx_byte_pool_prioritize                           PORTABLE C       */
-/*                                                           6.0          */
+/*                                                           6.1          */
 /*  AUTHOR                                                                */
 /*                                                                        */
 /*    William E. Lamie, Microsoft Corporation                             */
@@ -68,6 +68,8 @@
 /*    DATE              NAME                      DESCRIPTION             */
 /*                                                                        */
 /*  05-19-2020     William E. Lamie         Initial Version 6.0           */
+/*  09-30-2020     Yuxin Zhou               Modified comment(s),          */
+/*                                            resulting in version 6.1    */
 /*                                                                        */
 /**************************************************************************/
 UINT  _tx_byte_pool_prioritize(TX_BYTE_POOL *pool_ptr)
@@ -159,19 +161,19 @@ UINT            list_changed;
             /* Disable interrupts again.  */
             TX_DISABLE
 
-            /* Determine if any changes to the list have occurred while 
+            /* Determine if any changes to the list have occurred while
                interrupts were enabled.  */
-              
+
             /* Is the list head the same?  */
             if (head_ptr != pool_ptr -> tx_byte_pool_suspension_list)
             {
-            
+
                 /* The list head has changed, set the list changed flag.  */
                 list_changed =  TX_TRUE;
             }
             else
             {
-            
+
                 /* Is the suspended count the same?  */
                 if (suspended_count != pool_ptr -> tx_byte_pool_suspended_count)
                 {
@@ -210,12 +212,12 @@ UINT            list_changed;
         /* Release preemption.  */
         _tx_thread_preempt_disable--;
 
-        /* Now determine if the highest priority thread is at the front 
+        /* Now determine if the highest priority thread is at the front
            of the list.  */
         if (priority_thread_ptr != head_ptr)
         {
 
-            /* No, we need to move the highest priority suspended thread to the 
+            /* No, we need to move the highest priority suspended thread to the
                front of the list.  */
 
             /* First, remove the highest priority thread by updating the
