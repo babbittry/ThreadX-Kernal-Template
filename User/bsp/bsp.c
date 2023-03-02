@@ -47,7 +47,7 @@ void System_Init(void)
 	/* 
        STM32H7xx HAL 库初始化，此时系统用的还是H7自带的64MHz，HSI时钟:
 	   - 调用函数HAL_InitTick，初始化滴答时钟中断1ms。
-	   - 设置NVIV优先级分组为4。
+	   - 设置NVIC优先级分组为4。
 	 */
 	HAL_Init();
 
@@ -69,6 +69,8 @@ void System_Init(void)
 	EventRecorderStart();
 #endif
 
+
+	bsp_InitDWT();      /* 初始化DWT时钟周期计数器 */  
 }
 
 /*
@@ -81,7 +83,7 @@ void System_Init(void)
 */
 void bsp_Init(void)
 {
-	bsp_InitDWT();      /* 初始化DWT时钟周期计数器 */       
+	// bsp_InitDWT();      /* 初始化DWT时钟周期计数器 */       
 	bsp_InitKey();    	/* 按键初始化，要放在滴答定时器之前，因为按钮检测是通过滴答定时器扫描 */
 	bsp_InitUart();		/* 初始化串口 */
 	// bsp_InitExtIO();	/* 初始化FMC总线74HC574扩展IO. 必须在 bsp_InitLed()前执行 */	

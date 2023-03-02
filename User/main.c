@@ -130,6 +130,8 @@ __IO float     OSCPUUsage;       /* CPU百分比 */
 uint32_t       OSIdleCtrMax;     /* 1秒内最大的空闲计数 */
 uint32_t       OSIdleCtrRun;     /* 1秒内空闲任务当前计数 */
 
+__IO double    TXOSCPUUsage;     /* tx 的 CPU 百分比 */
+
 /*
 *********************************************************************************************************
 *	函 数 名: main
@@ -216,6 +218,8 @@ void  tx_application_define(void *first_unused_memory)
 */
 static  void  AppTaskStart (ULONG thread_input)
 {
+    EXECUTION_TIME TolTime, IdleTime, deltaTolTime, deltaIdleTime;
+	uint32_t uiCount = 0;
     (void)thread_input;
 
     /* 优先执行任务统计 */
@@ -233,10 +237,27 @@ static  void  AppTaskStart (ULONG thread_input)
     /* 创建任务间通信机制 */
     AppObjCreate();	
 
+    /* 计算CPU利用率 */
+	IdleTime = _tx_execution_idle_time_total;
+	TolTime = _tx_execution_thread_time_total + _tx_execution_isr_time_total + _tx_execution_idle_time_total;
+    
     while (1)
     {  
         /* 需要周期性处理的程序，对应裸机工程调用的SysTick_ISR */
         bsp_ProPer1ms();
+
+        /* CPU利用率统计 */
+		uiCount++;
+		if(uiCount == 200)
+		{
+			uiCount = 0;
+			deltaIdleTime = _tx_execution_idle_time_total - IdleTime;
+			deltaTolTime = _tx_execution_thread_time_total + _tx_execution_isr_time_total + _tx_execution_idle_time_total - TolTime;
+			TXOSCPUUsage = (double)deltaIdleTime/deltaTolTime;
+			TXOSCPUUsage = 100- TXOSCPUUsage*100;
+			IdleTime = _tx_execution_idle_time_total;
+			TolTime = _tx_execution_thread_time_total + _tx_execution_isr_time_total + _tx_execution_idle_time_total;
+		}
         tx_thread_sleep(1);
     }
 }
@@ -517,11 +538,19 @@ static void DispTaskInfo(void)
     /* 打印标题 */
     App_Printf("===============================================================\r\n");
     App_Printf("OS CPU Usage = %5.2f%%\r\n", OSCPUUsage);
+    App_Printf("CPU利用率 = %5.2f%%\r\n", TXOSCPUUsage);
+	App_Printf("任务执行时间 = %.9fs\r\n", (double)_tx_execution_thread_time_total/SystemCoreClock);
+	App_Printf("空闲执行时间 = %.9fs\r\n", (double)_tx_execution_idle_time_total/SystemCoreClock);
+	App_Printf("中断执行时间 = %.9fs\r\n", (double)_tx_execution_isr_time_total/SystemCoreClock);
+	App_Printf("系统总执行时间 = %.9fs\r\n", (double)(_tx_execution_thread_time_total + \
+		                                               _tx_execution_idle_time_total +  \
+	                                                   _tx_execution_isr_time_total)/SystemCoreClock);	
+	
     App_Printf("===============================================================\r\n");
     App_Printf(" 任务优先级 任务栈大小 当前使用栈  最大栈使用   任务名\r\n");
     App_Printf("   Prio     StackSize   CurStack    MaxStack   Taskname\r\n");
 
-    /* 遍历任务控制块列?TCB list)，打印所有的任务的优先级和名?*/
+    /* 遍历任务控制块列（TCB list)，打印所有的任务的优先级和名称 */
     while (p_tcb != (TX_THREAD *)0) 
     {
         

@@ -36,7 +36,7 @@
 */
 #include "tx_api.h"
 #include "tx_timer.h"
-
+#include "tx_execution_profile.h"
 
 /*
 *********************************************************************************************************
@@ -53,6 +53,9 @@
 */
 /* 方便RTOS里面使用 */
 extern void SysTick_ISR(void);
+extern EXECUTION_TIME     _tx_execution_thread_time_total;
+extern EXECUTION_TIME     _tx_execution_isr_time_total;
+extern EXECUTION_TIME     _tx_execution_idle_time_total;
 
 #define bsp_ProPer1ms  SysTick_ISR
 
