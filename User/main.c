@@ -30,7 +30,6 @@
 *                    App Task Blink任务  ：LED 灯闪烁。
 *                    App Task UserIF任务 ：按键消息处理。
 *                    App Task COM任务    ：浮点数串口打印。
-*                    App Task STAT任务   ：统计任务
 *                    App Task IDLE任务   ：空闲任务
 *                    System Timer Thread任务：系统定时器任务
 *                2. (1) 凡是用到printf函数的全部通过函数App_Printf实现。
