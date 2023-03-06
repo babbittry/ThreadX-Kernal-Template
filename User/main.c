@@ -10,16 +10,21 @@
 *              实验内容：
 *                1. 共创建了如下几个任务，通过按下按键K1可以通过串口打印任务堆栈使用情况
 *                    ===============================================================
-*                      OS CPU Usage =  1.94%
+*                    CPU利用率 = 0.29%
+*                    CPU利用率 = 1.038981031s
+*                    任务执行时间 = 475.218665115s
+*                    空闲执行时间 = 0.369709350s
+*                    系统总执行时间 = 476.627355496s
 *                    ===============================================================
-*                       Prio StackSize CurStack MaxStack Taskname
-*                        2     4092      383      391    App Task Start
-*                        3     4092      543      659    App Task Blink
-*                        4     4092      391      391    App Task UserIF
-*                        5     4092      543      659    App Task COM
-*                       30     1020      519      519    App Task STAT
-*                       31     1020      143       71    App Task IDLE
-*                        0     1020      391      391    System Timer Thread
+*                     任务优先级   任务栈大小   当前使用栈    最大栈使用   任务名
+*                       Prio     StackSize   CurStack    MaxStack   Taskname
+*                        2         4092        671         671      App Task Start
+*                       31         1020        111         111      App Task IDLE
+*                        3          508        111         111      App Task Blink
+*                        4         1020        255         635      App Task UserIF
+*                        5         1020        255         571      App Task COM
+*                        0         1020        159         159      System Timer Thread
+*                    ===============================================================
 *                    串口软件建议使用SecureCRT（V7光盘里面有此软件）查看打印信息。
 *                    App Task Start任务  ：启动任务，这里用作BSP驱动包处理。
 *                    App Task Blink任务  ：LED 灯闪烁。
@@ -40,6 +45,9 @@
 *       V1.0    2020-09-06   Eric2013    1. ST固件库1.9.0版本
 *                                        2. BSP驱动包V1.2
 *                                        3. ThreadX版本V6.0.1
+*       V1.1    2023-03-06   ZXY         1. ST固件库1.11.0版本
+*                                        2. BSP驱动包V1.x
+*                                        3. ThreadX版本V6.2.0
 *
 *	Copyright (C), 2020-2030, 安富莱电子 www.armfly.com
 *
@@ -103,7 +111,7 @@ static  void  AppTaskBlink          (ULONG thread_input);
 static  void  AppTaskUserIF         (ULONG thread_input);
 static  void  AppTaskCOM            (ULONG thread_input);
 static  void  AppTaskIDLE           (ULONG thread_input);
-static  void  App_Printf (const char *fmt, ...);
+static  void  App_Printf            (const char *fmt, ...);
 static  void  AppTaskCreate         (void);
 static  void  DispTaskInfo          (void);
 static  void  AppObjCreate          (void);
@@ -192,6 +200,12 @@ void  tx_application_define(void *first_unused_memory)
 */
 static  void  AppTaskStart (ULONG thread_input)
 {
+    /* 
+     * TolTime: 总的时间
+     * IdleTime： 总的空闲时间
+     * deltaTolTime：200ms 内的总时间
+     * deltaIdleTime： 200ms 内的空闲时间 
+     */
     EXECUTION_TIME TolTime, IdleTime, deltaTolTime, deltaIdleTime;
     uint32_t uiCount = 0;
     (void)thread_input;
@@ -354,41 +368,41 @@ static void AppTaskIDLE(ULONG thread_input)
 static  void  AppTaskCreate (void)
 {
     /**************创建Blink任务*********************/
-    tx_thread_create(&AppTaskBlinkTCB,               /* 任务控制块地址 */
-                       "App Task Blink",                 /* 任务名 */
-                       AppTaskBlink,                  /* 启动任务函数地址 */
-                       0,                             /* 传递给任务的参数 */
-                       &AppTaskBlinkStk[0],            /* 堆栈基地址 */
-                       APP_CFG_TASK_BLINK_STK_SIZE,    /* 堆栈空间大小 */
-                       APP_CFG_TASK_BLINK_PRIO,        /* 任务优先级*/
-                       APP_CFG_TASK_BLINK_PRIO,        /* 任务抢占阀值 */
-                       TX_NO_TIME_SLICE,               /* 不开启时间片 */
-                       TX_AUTO_START);                /* 创建后立即启动 */
+    tx_thread_create(&AppTaskBlinkTCB,                  /* 任务控制块地址 */
+                       "App Task Blink",                /* 任务名 */
+                       AppTaskBlink,                    /* 启动任务函数地址 */
+                       0,                               /* 传递给任务的参数 */
+                       &AppTaskBlinkStk[0],             /* 堆栈基地址 */
+                       APP_CFG_TASK_BLINK_STK_SIZE,     /* 堆栈空间大小 */
+                       APP_CFG_TASK_BLINK_PRIO,         /* 任务优先级*/
+                       APP_CFG_TASK_BLINK_PRIO,         /* 任务抢占阀值 */
+                       TX_NO_TIME_SLICE,                /* 不开启时间片 */
+                       TX_AUTO_START);                  /* 创建后立即启动 */
 
 
     /**************创建USER IF任务*********************/
-    tx_thread_create(&AppTaskUserIFTCB,               /* 任务控制块地址 */
-                       "App Task UserIF",              /* 任务名 */
-                       AppTaskUserIF,                  /* 启动任务函数地址 */
-                       0,                              /* 传递给任务的参数 */
+    tx_thread_create(&AppTaskUserIFTCB,                 /* 任务控制块地址 */
+                       "App Task UserIF",               /* 任务名 */
+                       AppTaskUserIF,                   /* 启动任务函数地址 */
+                       0,                               /* 传递给任务的参数 */
                        &AppTaskUserIFStk[0],            /* 堆栈基地址 */
-                       APP_CFG_TASK_USER_IF_STK_SIZE,  /* 堆栈空间大小 */
-                       APP_CFG_TASK_USER_IF_PRIO,      /* 任务优先级*/
-                       APP_CFG_TASK_USER_IF_PRIO,      /* 任务抢占阀值 */
-                       TX_NO_TIME_SLICE,               /* 不开启时间片 */
-                       TX_AUTO_START);                 /* 创建后立即启动 */
+                       APP_CFG_TASK_USER_IF_STK_SIZE,   /* 堆栈空间大小 */
+                       APP_CFG_TASK_USER_IF_PRIO,       /* 任务优先级*/
+                       APP_CFG_TASK_USER_IF_PRIO,       /* 任务抢占阀值 */
+                       TX_NO_TIME_SLICE,                /* 不开启时间片 */
+                       TX_AUTO_START);                  /* 创建后立即启动 */
 
     /**************创建COM任务*********************/
-    tx_thread_create(&AppTaskCOMTCB,               /* 任务控制块地址 */
-                       "App Task COM",              /* 任务名 */
-                       AppTaskCOM,                  /* 启动任务函数地址 */
-                       0,                           /* 传递给任务的参数 */
-                       &AppTaskCOMStk[0],            /* 堆栈基地址 */
-                       APP_CFG_TASK_COM_STK_SIZE,    /* 堆栈空间大小 */
-                       APP_CFG_TASK_COM_PRIO,        /* 任务优先级*/
-                       APP_CFG_TASK_COM_PRIO,        /* 任务抢占阀值 */
-                       TX_NO_TIME_SLICE,             /* 不开启时间片 */
-                       TX_AUTO_START);               /* 创建后立即启动 */
+    tx_thread_create(&AppTaskCOMTCB,                    /* 任务控制块地址 */
+                       "App Task COM",                  /* 任务名 */
+                       AppTaskCOM,                      /* 启动任务函数地址 */
+                       0,                               /* 传递给任务的参数 */
+                       &AppTaskCOMStk[0],               /* 堆栈基地址 */
+                       APP_CFG_TASK_COM_STK_SIZE,       /* 堆栈空间大小 */
+                       APP_CFG_TASK_COM_PRIO,           /* 任务优先级*/
+                       APP_CFG_TASK_COM_PRIO,           /* 任务抢占阀值 */
+                       TX_NO_TIME_SLICE,                /* 不开启时间片 */
+                       TX_AUTO_START);                  /* 创建后立即启动 */
 }
 
 /*
