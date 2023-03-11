@@ -25,6 +25,7 @@ del /Q project\EWARMv8\Debug
 rd  /Q /S project\EWARMv8\Flash
 rd /Q /S project\EWARMv8\settings
 rd /Q /S project\EWARMv8\Debug
+rd /Q /S project\EWARMv8\Flash\BrowseInfo
 
 del *.bak /s
 del *.ddk /s
