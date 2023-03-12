@@ -47,7 +47,7 @@
 *       V1.1    2023-03-06   ZXY         1. ST固件库1.11.0版本
 *                                        2. BSP驱动包V1.x
 *                                        3. ThreadX版本V6.2.0
-*       V1.2    2023-03-06   ZXY         1. ThreadX版本V6.2.1
+*       V1.2    2023-03-12   ZXY         1. ThreadX版本V6.2.1
 *
 *	Copyright (C), 2020-2030, 安富莱电子 www.armfly.com
 *
